@@ -373,6 +373,7 @@
 
           <div class="modal-actions">
             <button class="btn-outline" onclick="copyCause()">Copia causale</button>
+            <button id="confirmBtn" class="btn" onclick="confirmContribution()">Ho fatto il bonifico</button>
           </div>
 
           <div class="small-note">
@@ -492,6 +493,51 @@
     });
 
     loadItems();
+
+    async function confirmContribution() {
+  if (!currentItem) return;
+
+  const amountRaw = document.getElementById("amountInput").value.trim();
+  const numericAmount = Number(String(amountRaw).replace(",", "."));
+  const button = document.getElementById("confirmBtn");
+
+  if (isNaN(numericAmount) || numericAmount <= 0) {
+    alert("Inserisci un importo valido.");
+    return;
+  }
+
+  try {
+    button.disabled = true;
+    button.textContent = "Aggiornamento...";
+
+    const res = await fetch(API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8"
+      },
+      body: JSON.stringify({
+        item_id: currentItem.item_id,
+        amount: numericAmount
+      })
+    });
+
+    const result = await res.json();
+
+    if (!result.success) {
+      throw new Error(result.error || "Errore sconosciuto");
+    }
+
+    alert("Contributo registrato correttamente.");
+    closeModal();
+    await loadItems();
+
+  } catch (error) {
+    console.error(error);
+    alert("Errore durante l'aggiornamento: " + error.message);
+    button.disabled = false;
+    button.textContent = "Ho fatto il bonifico";
+  }
+}
   </script>
 </body>
 </html>
