@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Lista Regali 🎁</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f7fb;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 30px;
+    }
+
+    .item {
+      background: white;
+      border-radius: 12px;
+      padding: 15px;
+      margin: 15px auto;
+      max-width: 400px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .price {
+      font-weight: bold;
+      margin: 10px 0;
+    }
+
+    .progress {
+      background: #eee;
+      border-radius: 10px;
+      overflow: hidden;
+      height: 20px;
+      margin: 10px 0;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: #4CAF50;
+      width: 0%;
+    }
+
+    button {
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background: #0056b3;
+    }
+
+    a {
+      display: block;
+      margin-top: 10px;
+      color: #007bff;
+      text-decoration: none;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>Lista Regali 🎁</h1>
+
+<div id="list"></div>
+
+<script>
+const API_URL = "https://script.google.com/macros/s/AKfycbxnZ1caFO0s1aAl03hgN2pd7DCnKaebnOB2COwdxzDtcMk9JIJVW5jMoNXjCisSeYt2sg/exec";
+
+async function loadItems() {
+  const res = await fetch(API_URL);
+  const data = await res.json();
+
+  const container = document.getElementById("list");
+  container.innerHTML = "";
+
+  data.forEach(item => {
+    const percent = Math.min((item.raised / item.price) * 100, 100);
+
+    const div = document.createElement("div");
+    div.className = "item";
+
+    div.innerHTML = `
+      <h3>${item.name}</h3>
+      <div class="price">Prezzo: £${item.price}</div>
+
+      <div class="progress">
+        <div class="progress-bar" style="width:${percent}%"></div>
+      </div>
+
+      <div>Raccolti: £${item.raised}</div>
+
+      <a href="${item.link}" target="_blank">Vedi prodotto</a>
+
+      <button onclick="contribute('${item.name}')">Contribuisci</button>
+    `;
+
+    container.appendChild(div);
+  });
+}
+
+async function contribute(name) {
+  const amount = prompt("Quanto vuoi contribuire?");
+  if (!amount) return;
+
+  await fetch(API_URL, {
+    method: "POST",
+    body: JSON.stringify({
+      name: name,
+      amount: Number(amount)
+    })
+  });
+
+  loadItems();
+}
+
+loadItems();
+</script>
+
+</body>
+</html>
