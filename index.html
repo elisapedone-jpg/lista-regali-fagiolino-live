@@ -161,6 +161,12 @@
       background: #f3e8e1;
     }
 
+    .btn:disabled,
+    .btn-outline:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+    }
+
     .loading,
     .error {
       grid-column: 1 / -1;
@@ -349,7 +355,7 @@
 
         <div class="field">
           <label for="amountInput">Importo del contributo (£)</label>
-          <input id="amountInput" type="number" min="1" step="0.01" placeholder="Es. 20" />
+          <input id="amountInput" type="number" min="0.01" step="0.01" placeholder="Es. 20" />
         </div>
 
         <div class="field">
@@ -377,8 +383,8 @@
           </div>
 
           <div class="small-note">
-            Usa questa causale nel bonifico così possiamo associare correttamente il contributo
-            al regalo scelto.
+            Dopo aver effettuato il bonifico, clicca su “Ho fatto il bonifico” per aggiornare
+            l’avanzamento del regalo.
           </div>
         </div>
       </div>
@@ -417,6 +423,11 @@
           const link = item.link || "";
           const percent = target > 0 ? Math.min((collected / target) * 100, 100) : 0;
 
+          const safePayload = encodeURIComponent(JSON.stringify({
+            item_id: itemId,
+            item_name: itemName
+          }));
+
           const card = document.createElement("div");
           card.className = "card";
 
@@ -430,10 +441,7 @@
             <div class="percent-row">${percent.toFixed(0)}% completato</div>
             <div class="collected-row">Contributo raccolto: <strong>£${collected.toFixed(2)}</strong></div>
             <div class="actions">
-              <button class="btn" onclick='openModal(${JSON.stringify({
-                item_id: itemId,
-                item_name: itemName
-              })})'>Contribuisci</button>
+              <button class="btn" onclick="openModalFromEncoded('${safePayload}')">Contribuisci</button>
               ${link ? `<a class="btn-outline" href="${link}" target="_blank" rel="noopener noreferrer">Vedi regalo</a>` : ""}
             </div>
           `;
@@ -451,12 +459,19 @@
       }
     }
 
+    function openModalFromEncoded(encodedItem) {
+      const item = JSON.parse(decodeURIComponent(encodedItem));
+      openModal(item);
+    }
+
     function openModal(item) {
       currentItem = item;
       document.getElementById("modalBackdrop").classList.add("show");
       document.getElementById("selectedGift").textContent = item.item_name || "";
       document.getElementById("amountInput").value = "";
       document.getElementById("nameInput").value = "";
+      document.getElementById("confirmBtn").disabled = false;
+      document.getElementById("confirmBtn").textContent = "Ho fatto il bonifico";
       updateCause();
     }
 
@@ -485,6 +500,58 @@
       }
     }
 
+    async function confirmContribution() {
+      if (!currentItem) return;
+
+      const amountRaw = document.getElementById("amountInput").value.trim();
+      const numericAmount = Number(String(amountRaw).replace(",", "."));
+      const button = document.getElementById("confirmBtn");
+
+      if (isNaN(numericAmount) || numericAmount <= 0) {
+        alert("Inserisci un importo valido.");
+        return;
+      }
+
+      try {
+        button.disabled = true;
+        button.textContent = "Aggiornamento...";
+
+        const res = await fetch(API_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "text/plain;charset=utf-8"
+          },
+          body: JSON.stringify({
+            item_id: currentItem.item_id,
+            amount: numericAmount
+          })
+        });
+
+        const text = await res.text();
+        console.log("POST response raw:", text);
+
+        let result;
+        try {
+          result = JSON.parse(text);
+        } catch (e) {
+          throw new Error("Risposta non valida dallo script: " + text);
+        }
+
+        if (!result.success) {
+          throw new Error(result.error || "Errore sconosciuto");
+        }
+
+        alert("Contributo registrato correttamente.");
+        closeModal();
+        await loadItems();
+      } catch (error) {
+        console.error(error);
+        alert("Errore durante l'aggiornamento del contributo: " + error.message);
+        button.disabled = false;
+        button.textContent = "Ho fatto il bonifico";
+      }
+    }
+
     document.getElementById("amountInput").addEventListener("input", updateCause);
     document.getElementById("nameInput").addEventListener("input", updateCause);
 
@@ -493,51 +560,6 @@
     });
 
     loadItems();
-
-    async function confirmContribution() {
-  if (!currentItem) return;
-
-  const amountRaw = document.getElementById("amountInput").value.trim();
-  const numericAmount = Number(String(amountRaw).replace(",", "."));
-  const button = document.getElementById("confirmBtn");
-
-  if (isNaN(numericAmount) || numericAmount <= 0) {
-    alert("Inserisci un importo valido.");
-    return;
-  }
-
-  try {
-    button.disabled = true;
-    button.textContent = "Aggiornamento...";
-
-    const res = await fetch(API_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "text/plain;charset=utf-8"
-      },
-      body: JSON.stringify({
-        item_id: currentItem.item_id,
-        amount: numericAmount
-      })
-    });
-
-    const result = await res.json();
-
-    if (!result.success) {
-      throw new Error(result.error || "Errore sconosciuto");
-    }
-
-    alert("Contributo registrato correttamente.");
-    closeModal();
-    await loadItems();
-
-  } catch (error) {
-    console.error(error);
-    alert("Errore durante l'aggiornamento: " + error.message);
-    button.disabled = false;
-    button.textContent = "Ho fatto il bonifico";
-  }
-}
   </script>
 </body>
 </html>
