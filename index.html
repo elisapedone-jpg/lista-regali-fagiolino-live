@@ -116,10 +116,8 @@
 
     .progress-bar {
       height: 100%;
-      width: 0%;
       background: linear-gradient(90deg, #d4aa98 0%, #b88c7d 100%);
       border-radius: 999px;
-      transition: width 0.35s ease;
     }
 
     .actions {
@@ -280,13 +278,6 @@
       color: var(--text);
     }
 
-    .bank-note {
-      font-size: 0.92rem;
-      color: var(--muted);
-      line-height: 1.55;
-      margin: 10px 0 0;
-    }
-
     .cause-box {
       margin-top: 14px;
       background: white;
@@ -357,7 +348,7 @@
         <p id="selectedGift" class="gift-name"></p>
 
         <div class="field">
-          <label for="amountInput">Oppure inserisci un importo (£)</label>
+          <label for="amountInput">Importo del contributo (£)</label>
           <input id="amountInput" type="number" min="1" step="0.01" placeholder="Es. 20" />
         </div>
 
@@ -380,19 +371,13 @@
           <strong>Causale</strong>
           <div id="causeBox" class="cause-box">Verrà generata automaticamente</div>
 
-          <p class="bank-note">
-            Usa esattamente questa causale. Verrà generata automaticamente con il tuo nome,
-            il regalo scelto e l’importo, così possiamo associare correttamente il contributo.
-          </p>
-
           <div class="modal-actions">
-            <button class="btn-outline" onclick="toggleBankDetails()">Mostra dettagli bancari</button>
-            <button class="btn" onclick="copyCause()">Copia causale</button>
+            <button class="btn-outline" onclick="copyCause()">Copia causale</button>
           </div>
 
           <div class="small-note">
-            Questo sito aggiorna l’avanzamento del regalo. Dopo il bonifico potete avvisarci così
-            registreremo il contributo correttamente.
+            Usa questa causale nel bonifico così possiamo associare correttamente il contributo
+            al regalo scelto.
           </div>
         </div>
       </div>
@@ -403,7 +388,6 @@
     const API_URL = "https://script.google.com/macros/s/AKfycbxnZ1caFO0s1aAl03hgN2pd7DCnKaebnOB2COwdxzDtcMk9JIJVW5jMoNXjCisSeYt2sg/exec";
 
     let currentItem = null;
-    let bankVisible = true;
 
     function getGiftIcon(name) {
       const n = (name || "").toLowerCase();
@@ -447,10 +431,8 @@
             <div class="actions">
               <button class="btn" onclick='openModal(${JSON.stringify({
                 item_id: itemId,
-                item_name: itemName,
-                target: target,
-                collected: collected
-              })})'>Contributo</button>
+                item_name: itemName
+              })})'>Contribuisci</button>
               ${link ? `<a class="btn-outline" href="${link}" target="_blank" rel="noopener noreferrer">Vedi regalo</a>` : ""}
             </div>
           `;
@@ -500,12 +482,6 @@
       } catch (e) {
         alert("Non sono riuscito a copiare la causale.");
       }
-    }
-
-    function toggleBankDetails() {
-      const details = document.querySelector(".bank-detail");
-      bankVisible = !bankVisible;
-      details.style.display = bankVisible ? "grid" : "none";
     }
 
     document.getElementById("amountInput").addEventListener("input", updateCause);
