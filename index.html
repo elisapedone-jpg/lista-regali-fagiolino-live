@@ -1,357 +1,521 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Lista Regali Nascita</title>
   <style>
     :root {
-      --bg: #f4f8fb;
+      --bg: #f8f4ef;
       --card: #ffffff;
-      --text: #24323d;
-      --muted: #6b7c88;
-      --accent: #7daec8;
-      --accent-soft: #e3f0f7;
-      --border: #d9e6ef;
-      --shadow: 0 10px 30px rgba(30, 60, 80, 0.08);
+      --text: #3e2f2a;
+      --muted: #8b7c74;
+      --accent: #b88c7d;
+      --accent-dark: #9e7467;
+      --line: #eee4dd;
+      --shadow: 0 12px 30px rgba(80, 53, 42, 0.08);
+      --radius: 22px;
     }
-    * { box-sizing: border-box; }
-    body { margin: 0; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: linear-gradient(180deg, #f4f8fb 0%, #eef6fb 100%); color: var(--text); }
-    a { color: inherit; }
-    .container { max-width: 1120px; margin: 0 auto; padding: 24px; }
-    .hero { padding: 44px 0 26px; }
-    .hero-card { background: rgba(255,255,255,.82); backdrop-filter: blur(8px); border: 1px solid var(--border); border-radius: 28px; box-shadow: var(--shadow); padding: 34px; }
-    .eyebrow { display:inline-block; background: var(--accent-soft); color: #8a594b; border-radius:999px; padding:8px 14px; font-size: 13px; font-weight: 700; letter-spacing:.02em; }
-    h1 { margin: 16px 0 10px; font-size: clamp(30px, 4vw, 52px); line-height: 1.05; }
-    .lead { max-width: 760px; color: var(--muted); font-size: 18px; line-height: 1.6; }
-    .notice { margin-top: 18px; background: #fff4ef; border: 1px dashed #dfb7a9; color: #8c5b4d; padding: 14px 16px; border-radius: 16px; font-size: 14px; }
-    .section { margin-top: 36px; }
-    .section-head { display:flex; align-items:end; justify-content:space-between; gap:16px; margin-bottom: 16px; }
-    .section h2 { margin:0; font-size: 28px; }
-    .section p { margin:0; color: var(--muted); }
-    .grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; }
-    .card { background: var(--card); border: 1px solid var(--border); border-radius: 24px; padding: 20px; box-shadow: var(--shadow); display:flex; flex-direction:column; min-height: 260px; }
-    .card h3 { margin: 4px 0 8px; font-size: 22px; line-height: 1.2; }
-    .meta { color: var(--muted); font-size: 14px; }
-    .price { font-size: 26px; font-weight: 800; margin: 12px 0 6px; }
-    .progress-wrap { margin-top: 14px; }
-    .progress-label { display:flex; justify-content:space-between; gap:10px; font-size: 14px; color: var(--muted); margin-bottom: 8px; }
-    .progress { width:100%; height:12px; background:#f3ebe7; border-radius:999px; overflow:hidden; }
-    .progress > span { display:block; height:100%; background: linear-gradient(90deg, var(--accent), #d6ac96); border-radius:999px; width: 0%; }
-    .actions { display:flex; flex-wrap:wrap; gap:10px; margin-top:auto; padding-top: 18px; }
-    .btn { appearance:none; border:none; border-radius: 999px; padding: 12px 16px; font-weight: 700; cursor: pointer; font-size: 14px; text-decoration:none; display:inline-flex; align-items:center; justify-content:center; }
-    .btn-primary { background: var(--accent); color: white; }
-    .btn-secondary { background: var(--accent-soft); color: #7d5245; }
-    .btn-ghost { background: #f8f1ed; color: var(--text); }
-    .alternatives { margin-top: 12px; font-size: 13px; color: var(--muted); }
-    .alt-links { display:flex; flex-wrap:wrap; gap:8px; margin-top: 8px; }
-    .chip { border:1px solid var(--border); background:#fff; padding:7px 10px; border-radius:999px; text-decoration:none; font-size: 13px; color: var(--text); }
-    dialog { border:none; border-radius: 24px; padding:0; width:min(640px, calc(100vw - 24px)); box-shadow: 0 30px 80px rgba(20,20,20,0.25); }
-    dialog::backdrop { background: rgba(36, 24, 17, 0.48); }
-    .modal { padding: 24px; }
-    .modal h3 { margin: 4px 0 8px; font-size: 28px; }
-    .modal p { color: var(--muted); line-height:1.6; }
-    .amounts { display:grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap:10px; margin:18px 0; }
-    .amount-btn { border:1px solid var(--border); border-radius: 16px; padding: 14px 12px; background:#fff; font-weight:700; cursor:pointer; }
-    .amount-btn.active { border-color: var(--accent); background: var(--accent-soft); color: #76493d; }
-    .field { display:flex; flex-direction:column; gap:8px; margin:14px 0; }
-    label { font-weight: 600; font-size: 14px; }
-    input { width:100%; border:1px solid var(--border); border-radius: 14px; padding: 13px 14px; font-size: 16px; }
-    .bank-box { background:#f9f4f0; border:1px solid var(--border); border-radius: 18px; padding: 18px; margin-top: 18px; }
-    .bank-grid { display:grid; grid-template-columns: 1fr 1fr; gap: 12px 18px; }
-    .bank-row small { display:block; color: var(--muted); margin-bottom:4px; }
-    .bank-row strong { font-size: 15px; word-break: break-word; }
-    .transfer-note { margin-top: 14px; padding: 12px 14px; background: #fff; border-radius: 14px; font-size: 14px; color: var(--muted); }
-    .modal-actions { display:flex; justify-content:space-between; gap:10px; margin-top: 18px; flex-wrap:wrap; }
-    footer { color: var(--muted); text-align:center; padding: 34px 0 18px; font-size: 14px; }
-    @media (max-width: 640px) {
-      .hero-card { padding: 24px; }
-      .amounts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .bank-grid { grid-template-columns: 1fr; }
-      .section-head { flex-direction:column; align-items:start; }
-    }
-  
-    .item-icon { font-size: 28px; margin-bottom: 8px; line-height: 1; }
 
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #fbf7f3 0%, #f4ede7 100%);
+      color: var(--text);
+    }
+
+    .hero {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 56px 20px 24px;
+      text-align: center;
+    }
+
+    .hero h1 {
+      margin: 0 0 14px;
+      font-size: 2.7rem;
+      line-height: 1.1;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .hero p {
+      margin: 0 auto;
+      max-width: 760px;
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: var(--muted);
+    }
+
+    .hero .signature {
+      margin-top: 18px;
+      font-size: 0.98rem;
+      color: var(--muted);
+    }
+
+    .grid {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 18px 20px 56px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 22px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      min-height: 280px;
+    }
+
+    .gift-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 18px;
+      display: grid;
+      place-items: center;
+      margin: 0 auto 14px;
+      background: #f7eee9;
+      font-size: 1.7rem;
+    }
+
+    .card h3 {
+      margin: 0 0 10px;
+      text-align: center;
+      font-size: 1.25rem;
+      line-height: 1.35;
+      min-height: 54px;
+    }
+
+    .price-row,
+    .collected-row,
+    .percent-row {
+      font-size: 0.98rem;
+      color: var(--muted);
+      margin: 6px 0;
+      text-align: center;
+    }
+
+    .progress {
+      width: 100%;
+      height: 12px;
+      background: #efe5de;
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 16px 0 6px;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #d4aa98 0%, #b88c7d 100%);
+      border-radius: 999px;
+      transition: width 0.35s ease;
+    }
+
+    .actions {
+      margin-top: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding-top: 18px;
+    }
+
+    .btn,
+    .btn-outline {
+      border: none;
+      border-radius: 14px;
+      padding: 12px 16px;
+      font-size: 0.96rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s ease;
+      text-decoration: none;
+      text-align: center;
+      display: inline-block;
+    }
+
+    .btn {
+      background: var(--accent);
+      color: white;
+    }
+
+    .btn:hover {
+      background: var(--accent-dark);
+    }
+
+    .btn-outline {
+      background: #f8f2ee;
+      color: var(--accent-dark);
+      border: 1px solid #eadbd2;
+    }
+
+    .btn-outline:hover {
+      background: #f3e8e1;
+    }
+
+    .loading,
+    .error {
+      grid-column: 1 / -1;
+      text-align: center;
+      color: var(--muted);
+      font-size: 1rem;
+      padding: 30px 10px;
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(48, 30, 22, 0.38);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      z-index: 999;
+    }
+
+    .modal-backdrop.show {
+      display: flex;
+    }
+
+    .modal {
+      width: 100%;
+      max-width: 560px;
+      background: white;
+      border-radius: 26px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.18);
+      overflow: hidden;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 22px 24px 12px;
+    }
+
+    .modal-title {
+      margin: 0;
+      font-size: 1.5rem;
+      color: var(--text);
+    }
+
+    .close-btn {
+      border: none;
+      background: transparent;
+      font-size: 1rem;
+      color: var(--muted);
+      cursor: pointer;
+      padding: 6px 8px;
+    }
+
+    .modal-body {
+      padding: 0 24px 24px;
+    }
+
+    .gift-name {
+      margin: 0 0 8px;
+      color: var(--muted);
+      font-size: 0.98rem;
+    }
+
+    .field {
+      margin: 16px 0;
+    }
+
+    .field label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 0.95rem;
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .field input {
+      width: 100%;
+      padding: 13px 14px;
+      border-radius: 14px;
+      border: 1px solid #e7dad2;
+      background: #fcfaf8;
+      font-size: 1rem;
+      outline: none;
+    }
+
+    .field input:focus {
+      border-color: #d6b3a4;
+      background: #fff;
+    }
+
+    .bank-box {
+      margin-top: 18px;
+      background: #f8f3ef;
+      border: 1px solid #eee1d9;
+      border-radius: 18px;
+      padding: 18px;
+    }
+
+    .bank-box h4 {
+      margin: 0 0 14px;
+      font-size: 1rem;
+    }
+
+    .bank-detail {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 8px 12px;
+      font-size: 0.95rem;
+      margin-bottom: 14px;
+    }
+
+    .bank-detail strong {
+      color: var(--text);
+    }
+
+    .bank-note {
+      font-size: 0.92rem;
+      color: var(--muted);
+      line-height: 1.55;
+      margin: 10px 0 0;
+    }
+
+    .cause-box {
+      margin-top: 14px;
+      background: white;
+      border: 1px dashed #d8c3b7;
+      border-radius: 14px;
+      padding: 14px;
+      font-size: 0.94rem;
+      color: var(--text);
+      word-break: break-word;
+    }
+
+    .modal-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .small-note {
+      margin-top: 12px;
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    @media (max-width: 640px) {
+      .hero {
+        padding-top: 40px;
+      }
+
+      .hero h1 {
+        font-size: 2.1rem;
+      }
+
+      .modal {
+        border-radius: 22px;
+      }
+
+      .bank-detail {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 </head>
 <body>
-  <div class="container">
-    <section class="hero">
-      <div class="hero-card">
-        <span class="eyebrow">Lista regali</span>
-        <h1 id="pageTitle"></h1>
-        <p class="lead" id="pageIntro"></p>
-        <div class="notice">
-          Siamo felicissimi di condividere questo momento speciale con voi. 
-Se desiderate contribuire a uno dei regali per il nostro bambino, potete farlo qui in modo semplice.
-Grazie di cuore per il vostro affetto ❤️
-        </div>
-      </div>
-    </section>
+  <section class="hero">
+    <h1>Lista Regali Nascita</h1>
+    <p>
+      Siamo felicissimi di condividere questo momento speciale con voi. Se desiderate contribuire
+      a uno dei regali per il nostro bambino, potete farlo qui in modo semplice. Grazie di cuore
+      per il vostro affetto ❤️
+    </p>
+    <div class="signature">Fatto con amore per amici e famiglia.</div>
+  </section>
 
-    <div id="sections"></div>
+  <main id="list" class="grid">
+    <div class="loading">Caricamento...</div>
+  </main>
 
-    <footer>
-      Fatto con amore per amici e famiglia.
-    </footer>
-  </div>
-
-  <dialog id="contributeDialog">
+  <div id="modalBackdrop" class="modal-backdrop">
     <div class="modal">
-      <div style="display:flex;justify-content:space-between;gap:12px;align-items:start;">
-        <div>
-          <div class="eyebrow">Contributo</div>
-          <h3 id="modalTitle">Contribuisci</h3>
+      <div class="modal-header">
+        <h2 class="modal-title">Contribuisci</h2>
+        <button class="close-btn" onclick="closeModal()">Chiudi</button>
+      </div>
+
+      <div class="modal-body">
+        <p id="selectedGift" class="gift-name"></p>
+
+        <div class="field">
+          <label for="amountInput">Oppure inserisci un importo (£)</label>
+          <input id="amountInput" type="number" min="1" step="0.01" placeholder="Es. 20" />
         </div>
-        <button class="btn btn-ghost" onclick="closeDialog()">Chiudi</button>
-      </div>
-      <p id="modalText"></p>
 
-      <div class="amounts" id="amountButtons"></div>
-
-      <div class="field">
-        <label for="customAmount">Oppure inserisci un importo (£)</label>
-        <input id="customAmount" type="number" min="1" step="1" placeholder="e.g. 20" />
-      </div>
-
-      <div class="field">
-        <label for="contributorName">Il tuo nome (facoltativo)</label>
-        <input id="contributorName" type="text" placeholder="e.g. Giulia" />
-      </div>
-
-      <div class="bank-box" id="bankBox" hidden>
-        <strong>Dettagli per il bonifico</strong>
-        <div class="bank-grid" style="margin-top:14px;">
-          <div class="bank-row"><small>Intestatario</small><strong id="bankAccountName"></strong></div>
-          <div class="bank-row"><small>Sort code</small><strong id="bankSortCode"></strong></div>
-          <div class="bank-row"><small>Numero conto</small><strong id="bankAccountNumber"></strong></div>
-          <div class="bank-row"><small>IBAN</small><strong id="bankIban"></strong></div>
-          <div class="bank-row"><small>BIC/SWIFT</small><strong id="bankSwift"></strong></div>
-          <div class="bank-row" style="grid-column: 1 / -1;"><small>Causale</small><strong id="paymentReference"></strong></div>
+        <div class="field">
+          <label for="nameInput">Il tuo nome (facoltativo)</label>
+          <input id="nameInput" type="text" placeholder="Es. Maria" />
         </div>
-        <div class="transfer-note">Usa esattamente questa causale. Verrà generata automaticamente con il tuo nome, il regalo scelto e l’importo, così possiamo associare correttamente il contributo.</div>
-      </div>
 
-      <div class="modal-actions">
-        <button class="btn btn-secondary" onclick="showBankDetails()">Mostra dettagli bancari</button>
-        <button class="btn btn-primary" onclick="copyReference()">Copia causale</button>
+        <div class="bank-box">
+          <h4>Dettagli per il bonifico</h4>
+
+          <div class="bank-detail">
+            <strong>Intestatario</strong><span>Andrea Chiarenza / Elisa Pedone</span>
+            <strong>Sort code</strong><span>00-00-00</span>
+            <strong>Numero conto</strong><span>00000000</span>
+            <strong>IBAN</strong><span>GB00AAAA00000000000000</span>
+            <strong>BIC/SWIFT</strong><span>ABCDEFGH</span>
+          </div>
+
+          <strong>Causale</strong>
+          <div id="causeBox" class="cause-box">Verrà generata automaticamente</div>
+
+          <p class="bank-note">
+            Usa esattamente questa causale. Verrà generata automaticamente con il tuo nome,
+            il regalo scelto e l’importo, così possiamo associare correttamente il contributo.
+          </p>
+
+          <div class="modal-actions">
+            <button class="btn-outline" onclick="toggleBankDetails()">Mostra dettagli bancari</button>
+            <button class="btn" onclick="copyCause()">Copia causale</button>
+          </div>
+
+          <div class="small-note">
+            Questo sito aggiorna l’avanzamento del regalo. Dopo il bonifico potete avvisarci così
+            registreremo il contributo correttamente.
+          </div>
+        </div>
       </div>
     </div>
-  </dialog>
+  </div>
 
   <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbxrZmof5Q-DBZxqebBV9yBRg61rv6D8lqW3pt1Sbk1tUqYnc92w-Nrv3soKMPZA8oY/exec";
-    const pageData = {"pageTitle": "Lista Regali Nascita", "intro": "Benvenuti nella nostra lista regali per il bambino. Qui potete vedere gli articoli selezionati, scegliere quanto contribuire e utilizzare i dettagli bancari per effettuare il bonifico.", "bankDetails": {"accountName": "Andrea Chiarenza & Elisa Pedone", "sortCode": "23-01-20", "accountNumber": "34718731", "iban": "GB33REVO23012034718731", "swift": "REVOGB21", "referencePrefix": "REGALO"}, "sections": [{"title": "Piccoli regali - Categorie", "items": [{"name": "Cestino Pannolini Usati", "price": "\u00a314", "link": "https://www.boots.com/tommee-tippee-twist-and-click-advanced-nappyd-disposal-bins-system-white-10259522?traffic=paid.shopping&gclsrc=aw.ds&gad_source=1&gad_campaignid=19973634862&gbraid=0AAAAA-AdmwTnweCuCJBr_Am_z5cM8lzfy&gclid=EAIaIQobChMIvvGJnIyYkwMVJ5JQBh2XEwUiEAQYAiABEgIaEfD_BwE", "alternatives": [], "target": 14.0, "raccolti": 0.0}, {"name": "Lenzuolini", "price": "\u00a315", "link": "https://www.dunelm.com/product/safari-natural-100-cotton-pack-of-2-fitted-sheets-1000167433?branchCode=0165&defaultSkuId=30691901&gad_campaignid=20571351590&gad_source=1&gbraid=0AAAAADGqyX2fzo0d3Bc9VKkMPGsQuV1Wv&gclid=EAIaIQobChMI69fx3ayikwMVO5NQBh037CA4EAQYBCABEgLWR_D_BwE&gclsrc=aw.ds&utm_campaign=Kids_Bedding-PMax_%5BGOO-LIA-KIDSACCESS-BEDDING%5D&utm_medium=cpc&utm_source=google&kidsBeddingSize=Cot+Bed", "alternatives": [{"price": "\u00a324", "link": "https://www.johnlewis.com/john-lewis-safari-print-cotton-fitted-cotbed-sheet-70-x-140cm-pack-of-2/p5401791"}], "target": 15.0, "raccolti": 0.0}, {"name": "Changing bag", "price": "\u00a380", "link": "https://www.next.co.uk/style/su823771/w95140", "alternatives": [], "target": 80.0, "raccolti": 0.0}, {"name": "Copertina Leggera", "price": "\u00a340", "link": "https://www.zarahome.com/gb/knit-baby-blanket-l43699004?similar=true&categoryId=0&pelement=479909490&colorId=999", "alternatives": [{"price": "\u00a326", "link": "https://www2.hm.com/en_gb/productpage.1306619001.html"}], "target": 40.0, "raccolti": 0.0}, {"name": "Fleece", "price": "\u00a320", "link": "https://www.zarahome.com/gb/fleece-baby-blanket-with-embroidered-balloons-l40610004?similar=true&categoryId=0&pelement=475381573&colorId=733", "alternatives": [], "target": 20.0, "raccolti": 0.0}, {"name": "Scialle", "price": "\u00a330", "link": "https://neutrumbear.com/products/luxury-pram-cosy-lined-2/?attribute_pa_colour=sage-green&attribute_pa_personalisation=no", "alternatives": [], "target": 30.0, "raccolti": 0.0}, {"name": "Sacca nanna", "price": "\u00a320", "link": "https://www.next.co.uk/style/su824252/h74513", "alternatives": [], "target": 20.0, "raccolti": 0.0}]}, {"title": "Medi regali- Categorie", "items": [{"name": "Vaschetta neonato / supporto bagnetto", "price": "\u00a360", "link": "https://www.mamasandpapas.com/products/aquascale-bath-v3-digital-baby-bath-544802701?utm_term=36584154398885&utm_source=google&utm_medium=cpc&utm_campaign=uk+-+shopping+-+equipment+-+pmax+-+priority&gad_source=1&gad_campaignid=20506852032&gbraid=0AAAAADsD1FY6za3z2D3mH-WA-Junrxkh2&gclid=Cj0KCQiAp-zLBhDkARIsABcYc6tMY3NOIR_yBTv37dR3d_ecKuhseNGBCcqeSBWEVkLG3Yy_1g_upUUaAvIrEALw_wcB", "alternatives": [], "target": 60.0, "raccolti": 0.0}, {"name": "Changing Table", "price": "\u00a372.83", "link": "https://www.amazon.co.uk/dp/B0DG8XWB7F/?coliid=I30RH5Y7L74P62&colid=1S5JX9ST1WRZM&ref_=list_c_wl_lv_ov_lig_dp_it&th=1", "alternatives": [], "target": 72.83, "raccolti": 0.0}, {"name": "Sterilizzatore", "price": "\u00a399.99", "link": "https://www.boots.com/tommee-tippee-complete-feeding-kit-black-10324037?traffic=paid.shopping&gclsrc=aw.ds&gad_source=1&gad_campaignid=19973634862&gbraid=0AAAAA-AdmwTdEWjKEhUea6CLNI7kX_EP1&gclid=EAIaIQobChMIqYXVi96wkgMV8pRQBh1cnypcEAQYAyABEgKUr_D_BwE", "alternatives": [], "target": 99.99, "raccolti": 0.0}, {"name": "Materassino Culletta", "price": "\u00a375", "link": "https://www.ikea.com/gb/en/p/skoenast-foam-mattress-for-cot-70593593/", "alternatives": [], "target": 75.0, "raccolti": 0.0}]}, {"title": "Grandi regali - Categorie", "items": [{"name": "carrycot + stroller + footmuff + seat liner + raincover", "price": "\u00a3234", "link": "https://icklebubba.com/products/stomp-urban-10-piece-travel-system-with-i-size-cirrus-car-seat-isofix-base?variant=48096053887260", "alternatives": [], "target": 234.0, "raccolti": 0.0}, {"name": "car seat + isofix base + car window blinds", "price": "\u00a3145", "link": null, "alternatives": [], "target": 145.0, "raccolti": 0.0}, {"name": "Seggiolone evolutivo", "price": "\u00a3138", "link": "https://www.amazon.co.uk/Kinderkraft-Highchair-Multifunctional-Ajustable-Detachable/dp/B0DDPRML5J/ref=asc_df_B0DDPRML5J?mcid=0869725750f53ce3ae2dabbe389f96ea&th=1&tag=googshopuk-21&linkCode=df0&hvadid=710751753322&hvpos=&hvnetw=g&hvrand=5190289920673863760&hvpone=&hvptwo=&hvqmt=&hvdev=c&hvdvcmdl=&hvlocint=&hvlocphy=9045629&hvtargid=pla-2393187039493&hvocijid=5190289920673863760-B0DDPRML5J-&hvexpln=0&gad_source=1", "alternatives": [], "target": 138.0, "raccolti": 0.0}, {"name": "Culletta", "price": "\u00a3379", "link": "https://www.ikea.com/gb/en/p/myllra-cot-with-drawer-beige-80597048/#content", "alternatives": [], "target": 379.0, "raccolti": 0.0}, {"name": "Marsupio", "price": 150, "link": "https://www.babybjorn.co.uk/products/baby-carriers/baby-carrier-move/sage-green-3d-mesh/", "alternatives": [], "target": 150.0, "raccolti": 0.0}]}]};
+    const API_URL = "https://script.google.com/macros/s/AKfycbxnZ1caFO0s1aAl03hgN2pd7DCnKaebnOB2COwdxzDtcMk9JIJVW5jMoNXjCisSeYt2sg/exec";
 
-    
-    const itemIcons = {
-      'Cestino Pannolini Usati': '🧺',
-      'Lenzuolini': '🛏️',
-      'Changing bag': '👜',
-      'Copertina Leggera': '🧸',
-      'Fleece': '☁️',
-      'Scialle': '🍼',
-      'Sacca nanna': '🌙',
-      'Vaschetta neonato / supporto bagnetto': '🛁',
-      'Changing Table': '🪞',
-      'Sterilizzatore': '✨',
-      'Materassino Culletta': '🛌',
-      'carrycot + stroller + footmuff + seat liner + raincover': '🚼',
-      'car seat + isofix base + car window blinds': '🚗',
-      'Seggiolone evolutivo': '🪑',
-      'Culletta': '🍼',
-      'Marsupio': '👶'
-    };
+    let currentItem = null;
+    let bankVisible = true;
 
-    let activeItem = null;
-    let activeAmount = null;
-
-    const formatGBP = value => new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP', maximumFractionDigits: value % 1 === 0 ? 0 : 2 }).format(value || 0);
-
-    function slugify(text) {
-      return String(text || 'item').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '').slice(0, 36);
+    function getGiftIcon(name) {
+      const n = (name || "").toLowerCase();
+      if (n.includes("sacca") || n.includes("coperta")) return "🧺";
+      if (n.includes("cestino")) return "🍼";
+      if (n.includes("materass")) return "🛏️";
+      if (n.includes("seggiolone")) return "🪑";
+      if (n.includes("bagnetto")) return "🛁";
+      if (n.includes("passeggino")) return "🛒";
+      return "🎁";
     }
 
-    async function loadProgressFromSheet() {
+    async function loadItems() {
       try {
         const res = await fetch(API_URL);
-        const rows = await res.json();
+        const data = await res.json();
 
-        const map = {};
-        rows.forEach(row => {
-          map[String(row.item_id || '').trim()] = Number(row.collected || 0);
-        });
+        const container = document.getElementById("list");
+        container.innerHTML = "";
 
-        pageData.sections.forEach(section => {
-          section.items.forEach(item => {
-            const id = slugify(item.name);
-            if (id in map) item.raccolti = map[id];
-          });
-        });
-      } catch (e) {
-        console.error('Errore caricamento progressi:', e);
-      }
-    }
+        data.forEach(item => {
+          const itemId = item.item_id || "";
+          const itemName = item.item_name || "";
+          const target = Number(item.target || 0);
+          const collected = Number(item.collected || 0);
+          const link = item.link || "";
+          const percent = target > 0 ? Math.min((collected / target) * 100, 100) : 0;
 
-    async function sendContributionToSheet(item, amount) {
-      try {
-        await fetch(API_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain' },
-          body: JSON.stringify({
-            item_id: slugify(item.name),
-            amount: Number(amount)
-          })
-        });
-      } catch (e) {
-        console.error('Errore invio contributo:', e);
-      }
-    }
+          const card = document.createElement("div");
+          card.className = "card";
 
-    function renderPage() {
-      document.title = pageData.pageTitle;
-      document.getElementById('pageTitle').textContent = pageData.pageTitle;
-      document.getElementById('pageIntro').textContent = pageData.intro;
-      const container = document.getElementById('sections');
-      container.innerHTML = '';
-
-      pageData.sections.forEach(section => {
-        const sectionEl = document.createElement('section');
-        sectionEl.className = 'section';
-        const itemCount = section.items.length;
-        sectionEl.innerHTML = `
-          <div class="section-head">
-            <div>
-              <h2>${section.title}</h2>
-              <p>${itemCount} selected gift${itemCount === 1 ? '' : 's'} in this section.</p>
-            </div>
-          </div>
-          <div class="grid"></div>
-        `;
-        const grid = sectionEl.querySelector('.grid');
-
-        section.items.forEach(item => {
-          const percent = item.target > 0 ? Math.min(100, Math.round((item.raccolti / item.target) * 100)) : 0;
-          const card = document.createElement('article');
-          card.className = 'card';
-          const altHtml = (item.alternatives && item.alternatives.length)
-            ? `
-              <div class="alternatives">
-                Opzioni alternative:
-                <div class="alt-links">
-                  ${item.alternatives.map((alt, idx) => `<a class="chip" href="${alt.link}" target="_blank" rel="noopener">Option ${idx + 2} · ${alt.price || 'View'}</a>`).join('')}
-                </div>
-              </div>`
-            : '';
-
-          const icon = itemIcons[item.name] || '⭐';
           card.innerHTML = `
-            <div class="item-icon">${icon}</div>
-            <div class="meta">Articolo selezionato</div>
-            <h3>${item.name}</h3>
-            <div class="price">${typeof item.price === 'string' ? item.price : formatGBP(item.target)}</div>
-            <div class="meta">Prezzo totale</div>
-            <div class="progress-wrap">
-              <div class="progress-label">
-                <span>${formatGBP(item.raccolti)} raccolti</span>
-                <span>${percent}%</span>
-              </div>
-              <div class="progress"><span style="width:${percent}%"></span></div>
+            <div class="gift-icon">${getGiftIcon(itemName)}</div>
+            <h3>${itemName}</h3>
+            <div class="price-row">Prezzo totale: <strong>£${target.toFixed(2)}</strong></div>
+            <div class="progress">
+              <div class="progress-bar" style="width:${percent}%"></div>
             </div>
-            ${altHtml}
+            <div class="percent-row">${percent.toFixed(0)}% completato</div>
+            <div class="collected-row">Contributo raccolto: <strong>£${collected.toFixed(2)}</strong></div>
             <div class="actions">
-              ${item.link ? `<a class="btn btn-secondary" href="${item.link}" target="_blank" rel="noopener">Vedi prodotto</a>` : ''}
-              <button class="btn btn-primary">Contribuisci</button>
+              <button class="btn" onclick='openModal(${JSON.stringify({
+                item_id: itemId,
+                item_name: itemName,
+                target: target,
+                collected: collected
+              })})'>Contributo</button>
+              ${link ? `<a class="btn-outline" href="${link}" target="_blank" rel="noopener noreferrer">Vedi regalo</a>` : ""}
             </div>
           `;
-          card.querySelector('.btn-primary').addEventListener('click', () => openDialog(item));
-          grid.appendChild(card);
+
+          container.appendChild(card);
         });
 
-        container.appendChild(sectionEl);
-      });
-    }
-
-    function openDialog(item) {
-      activeItem = item;
-      activeAmount = null;
-      document.getElementById('modalTitle').textContent = item.name;
-      document.getElementById('modalText').textContent = `Scegli un importo da contribuire per ${item.name}. Quando sei pronto, apri i dettagli bancari ed effettua il bonifico usando la causale indicata.`;
-      document.getElementById('customAmount').value = '';
-      document.getElementById('contributorName').value = '';
-      document.getElementById('bankBox').hidden = true;
-
-      const suggestions = getSuggestedAmounts(item.target);
-      const buttons = document.getElementById('amountButtons');
-      buttons.innerHTML = '';
-      suggestions.forEach(amount => {
-        const btn = document.createElement('button');
-        btn.className = 'amount-btn';
-        btn.textContent = formatGBP(amount);
-        btn.addEventListener('click', () => {
-          document.querySelectorAll('.amount-btn').forEach(el => el.classList.remove('active'));
-          btn.classList.add('active');
-          activeAmount = amount;
-          document.getElementById('customAmount').value = '';
-        });
-        buttons.appendChild(btn);
-      });
-
-      document.getElementById('contributeDialog').showModal();
-    }
-
-    function getSuggestedAmounts(target) {
-      if (target <= 20) return [5, 10, 15, 20];
-      if (target <= 60) return [10, 15, 20, 30];
-      if (target <= 120) return [15, 25, 40, 50];
-      return [20, 30, 50, 75];
-    }
-
-    async function showBankDetails() {
-      const custom = Number(document.getElementById('customAmount').value);
-      const contributor = document.getElementById('contributorName').value.trim();
-      const amount = custom > 0 ? custom : activeAmount;
-      if (!amount) {
-        alert('Seleziona o inserisci un importo.');
-        return;
+        if (!data.length) {
+          container.innerHTML = `<div class="error">Nessun regalo trovato.</div>`;
+        }
+      } catch (error) {
+        document.getElementById("list").innerHTML =
+          `<div class="error">Errore nel caricamento della lista.</div>`;
+        console.error(error);
       }
-      const refName = contributor ? slugify(contributor).toUpperCase() : 'FRIEND';
-      const refItem = slugify(activeItem?.name || 'gift').toUpperCase();
-      const reference = `${pageData.bankDetails.referencePrefix}-${refItem}-${refName}-${Math.round(amount)}`;
-
-      document.getElementById('bankAccountName').textContent = pageData.bankDetails.accountName;
-      document.getElementById('bankSortCode').textContent = pageData.bankDetails.sortCode;
-      document.getElementById('bankAccountNumber').textContent = pageData.bankDetails.accountNumber;
-      document.getElementById('bankIban').textContent = pageData.bankDetails.iban;
-      document.getElementById('bankSwift').textContent = pageData.bankDetails.swift || '';
-      document.getElementById('paymentReference').textContent = reference;
-      document.getElementById('bankBox').hidden = false;
-
-      await sendContributionToSheet(activeItem, amount);
-      await loadProgressFromSheet();
-      loadProgressFromSheet().then(() => renderPage());
     }
 
-    async function copyReference() {
-      const ref = document.getElementById('paymentReference').textContent;
-      if (!ref) {
-        alert('Open the bank details first to generate the payment reference.');
-        return;
-      }
+    function openModal(item) {
+      currentItem = item;
+      document.getElementById("modalBackdrop").classList.add("show");
+      document.getElementById("selectedGift").textContent = item.item_name || "";
+      document.getElementById("amountInput").value = "";
+      document.getElementById("nameInput").value = "";
+      updateCause();
+    }
+
+    function closeModal() {
+      document.getElementById("modalBackdrop").classList.remove("show");
+      currentItem = null;
+    }
+
+    function updateCause() {
+      const amount = document.getElementById("amountInput").value.trim();
+      const name = document.getElementById("nameInput").value.trim();
+      const safeName = name || "Anonimo";
+      const gift = currentItem?.item_name || "Regalo";
+      const safeAmount = amount ? `£${Number(amount).toFixed(2)}` : "importo libero";
+      document.getElementById("causeBox").textContent = `${safeName} - ${gift} - ${safeAmount}`;
+    }
+
+    async function copyCause() {
+      updateCause();
+      const text = document.getElementById("causeBox").textContent;
       try {
-        await navigator.clipboard.writeText(ref);
-        alert('Causale copied.');
+        await navigator.clipboard.writeText(text);
+        alert("Causale copiata.");
       } catch (e) {
-        alert('Impossibile copiare automaticamente. Copiala manualmente.');
+        alert("Non sono riuscito a copiare la causale.");
       }
     }
 
-    function closeDialog() {
-      document.getElementById('contributeDialog').close();
+    function toggleBankDetails() {
+      const details = document.querySelector(".bank-detail");
+      bankVisible = !bankVisible;
+      details.style.display = bankVisible ? "grid" : "none";
     }
 
-    renderPage();
+    document.getElementById("amountInput").addEventListener("input", updateCause);
+    document.getElementById("nameInput").addEventListener("input", updateCause);
+
+    document.getElementById("modalBackdrop").addEventListener("click", function(e) {
+      if (e.target === this) closeModal();
+    });
+
+    loadItems();
   </script>
 </body>
 </html>
