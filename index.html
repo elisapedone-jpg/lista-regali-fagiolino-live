@@ -34,10 +34,10 @@ body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:#e8e6de;c
 .bar-bg{height:6px;background:#f0ede7;border-radius:3px;overflow:hidden;margin-bottom:12px}
 .bar-fill{height:100%;border-radius:3px;transition:width .5s ease}
 .gift-actions{display:flex;gap:6px;flex-wrap:wrap}
-.btn-contribute{background:linear-gradient(135deg,#8a9a7e,#a5aa6a);color:#fff;border:none;border-radius:8px;padding:7px 12px;font-size:11px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:4px}
+.btn-contribute{background:#8a9a7e;color:#fff;border:none;border-radius:8px;padding:7px 12px;font-size:11px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:4px}
 .btn-see{background:#eef3ea;color:#5a6b52;border:1px solid #c5d4b8;border-radius:8px;padding:7px 12px;font-size:11px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:4px}
 .btn-link{background:#f5f3ee;color:#6b7c6b;border:none;border-radius:8px;padding:7px 12px;font-size:11px;font-weight:600;cursor:pointer;text-decoration:none;display:flex;align-items:center;gap:4px}
-.footer{text-align:center;color:#c5bfa8;font-size:11px;padding:0 16px;margin-top:14px}
+.footer{text-align:center;color:#b5b0a0;font-size:11px;padding:0 16px;margin-top:14px}
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;z-index:999;padding:16px;backdrop-filter:blur(3px)}
 .modal{background:#fff;border-radius:20px;width:100%;max-width:400px;max-height:88vh;overflow:auto;position:relative}
 .modal-admin{max-width:480px}
@@ -48,7 +48,7 @@ body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:#e8e6de;c
 .field-label{font-size:12px;font-weight:600;color:#666;display:block;margin-bottom:5px}
 .field-input{width:100%;padding:10px 14px;border:1.5px solid #e0ddd5;border-radius:10px;font-size:14px;margin-bottom:14px;outline:none;background:#fafaf7;font-family:inherit}
 .field-input:focus{border-color:#8a9a7e}
-.btn-primary{width:100%;background:linear-gradient(135deg,#8a9a7e,#a5aa6a);color:#fff;border:none;border-radius:10px;padding:11px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit}
+.btn-primary{width:100%;background:#8a9a7e;color:#fff;border:none;border-radius:10px;padding:11px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit}
 .bank-box{background:#f9f8f4;border-radius:14px;padding:16px;margin-bottom:14px;border:1px solid #e8e5df}
 .bank-title{font-size:12px;font-weight:700;color:#6b7c6b;margin:0 0 10px}
 .bank-details{font-size:12.5px;line-height:1.9;color:#555}
@@ -56,7 +56,7 @@ body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:#e8e6de;c
 .btn-copy{margin-top:10px;background:#fff;border:1.5px solid #8a9a7e;border-radius:8px;padding:7px 14px;font-size:12px;color:#6b7c6b;cursor:pointer;display:inline-flex;align-items:center;gap:5px;font-weight:600;font-family:inherit}
 .btn-row{display:flex;gap:8px}
 .btn-back{padding:11px 16px;background:#f0ede7;border:none;border-radius:10px;font-size:12px;color:#999;cursor:pointer;font-weight:600;font-family:inherit}
-.btn-confirm{flex:1;background:linear-gradient(135deg,#8a9a7e,#a5aa6a);color:#fff;border:none;border-radius:10px;padding:11px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;font-family:inherit}
+.btn-confirm{flex:1;background:#8a9a7e;color:#fff;border:none;border-radius:10px;padding:11px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;font-family:inherit}
 .success-icon{width:52px;height:52px;border-radius:50%;background:#8a9a7e;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;color:#fff}
 .admin-section{background:#f9f8f4;border-radius:14px;padding:16px;margin-bottom:20px;border:1px solid #e8e5df}
 .admin-section-title{font-size:13px;font-weight:700;color:#5a6b52;margin:0 0 12px}
@@ -101,7 +101,6 @@ const db=getFirestore(initializeApp({
   appId:"1:607449847043:web:7957fb3d24629e95658536"
 }));
 
-/* ── Image lookup: by ID, then by name (lowercase) ── */
 const IMG={
   "s1":"https://www.mamasandpapas.com/cdn/shop/files/tommee-tippee-nappy-bins-tommee-tippee-twist-and-click-advanced-nappy-bin-34435138748581_1024x1024@2x.jpg?v=1686815183",
   "s2":"https://images.dunelm.com/30691902.jpg?$standardplayerdefault$&img404=noimagedefault",
@@ -113,7 +112,7 @@ const IMG={
   "s8":"https://xcdn.next.co.uk/common/items/default/default/itemimages/3_4Ratio/product/lge/H74513s2.jpg?im=Resize,width=750",
   "m1":"https://www.mamasandpapas.com/cdn/shop/products/aquascale-baths-aquascale-trade-v3-digital-baby-bath-white-30881021198501_1024x1024@2x.jpg?v=1628426270",
   "m2":"https://media.johnlewiscontent.com/i/JohnLewis/109850016?fmt=auto&$background-off-white$&wid=640&hei=853",
-  "m3":"https://m.media-amazon.com/images/I/81CjcXRu3qL._AC_SX679_.jpg",
+  "m3":"https://media.johnlewiscontent.com/i/JohnLewis/109850016?fmt=auto&$background-off-white$&wid=640&hei=853",
   "m4":"https://www.ikea.com/gb/en/images/products/skoenast-foam-mattress-for-cot__1451311_pe990673_s5.jpg?f=xl",
   "m5":"https://m.media-amazon.com/images/I/51m+4Ucsm3L._AC_SX679_.jpg",
   "g1":"https://icklebubba.com/cdn/shop/files/10-010-300-151_02.jpg?v=1770804068&width=1960",
@@ -153,56 +152,56 @@ const DEFAULT_GIFTS=[
 ];
 
 const ADMIN_PWD="Fagiolino26";
-const fmt=v=>`£${v.toFixed(2)}`;
+const fmt=function(v){return'£'+v.toFixed(2)};
 function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
 
 const SVG={
-  gift:`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg>`,
-  heart:`<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>`,
-  ext:`<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>`,
-  eye:`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`,
-  check:`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`,
-  x:`<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`,
-  copy:`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>`,
-  gear:`<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>`,
-  trash:`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>`,
-  reset:`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>`,
-  plus:`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>`
+  gift:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg>',
+  heart:'<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>',
+  ext:'<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>',
+  eye:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>',
+  check:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>',
+  x:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>',
+  copy:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>',
+  gear:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>',
+  trash:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>',
+  reset:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>',
+  plus:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>'
 };
 
-let gifts=[];
-let contribs={};
-let viewImg=null;
-let modal=null;
-let modalStep=1;
-let modalName="";
-let modalAmount="";
-let modalCopied=false;
-let modalDone=false;
-let adminOpen=false;
-let adminAuth=false;
-let confirmDelId=null;
+var gifts=[];
+var contribs={};
+var viewImg=null;
+var modal=null;
+var modalStep=1;
+var modalName="";
+var modalAmount="";
+var modalCopied=false;
+var modalDone=false;
+var adminOpen=false;
+var adminAuth=false;
+var confirmDelId=null;
 
-const giftsRef=doc(db,"registry","gifts");
-const contribsRef=doc(db,"registry","contributions");
+var giftsRef=doc(db,"registry","gifts");
+var contribsRef=doc(db,"registry","contributions");
 
 async function initData(){
   try{
-    const gs=await getDoc(giftsRef);
+    var gs=await getDoc(giftsRef);
     gifts=gs.exists()?(gs.data().items||DEFAULT_GIFTS):DEFAULT_GIFTS;
     if(!gs.exists())await setDoc(giftsRef,{items:DEFAULT_GIFTS});
-  }catch(e){gifts=DEFAULT_GIFTS;console.error(e)}
+  }catch(e){gifts=DEFAULT_GIFTS}
   try{
-    const cs=await getDoc(contribsRef);
+    var cs=await getDoc(contribsRef);
     if(cs.exists())contribs=cs.data()||{};
-  }catch(e){console.error(e)}
-  onSnapshot(giftsRef,s=>{if(s.exists()){gifts=s.data().items||[];render()}});
-  onSnapshot(contribsRef,s=>{if(s.exists()){contribs=s.data()||{};render()}});
+  }catch(e){}
+  onSnapshot(giftsRef,function(s){if(s.exists()){gifts=s.data().items||[];render()}});
+  onSnapshot(contribsRef,function(s){if(s.exists()){contribs=s.data()||{};render()}});
   render();
 }
 
-async function saveGifts(){try{await setDoc(giftsRef,{items:gifts})}catch(e){console.error(e)}}
-async function saveContribs(){try{await setDoc(contribsRef,contribs)}catch(e){console.error(e)}}
+async function saveGifts(){try{await setDoc(giftsRef,{items:gifts})}catch(e){}}
+async function saveContribs(){try{await setDoc(contribsRef,contribs)}catch(e){}}
 
 function render(){
   document.getElementById("app").innerHTML=
@@ -215,156 +214,125 @@ function render(){
 }
 
 function renderHero(){
-  return`<div class="hero">
-    <button class="admin-btn" onclick="openAdmin()">${SVG.gear}</button>
-    <div class="hero-label">LISTA BABY</div>
-    <h1>Andrea & Elisa</h1>
-    <p>Il nostro piccolo nido sta prendendo forma 🌿<br>Se desiderate contribuire, interamente o parzialmente, a uno dei regali, potete farlo qui in modo semplice. Grazie di cuore ❤️!</p>
-  </div>`;
+  return '<div class="hero">'+
+    '<button class="admin-btn" onclick="openAdmin()">'+SVG.gear+'</button>'+
+    '<div class="hero-label">LISTA BABY</div>'+
+    '<h1>Andrea &amp; Elisa</h1>'+
+    '<p>Il nostro piccolo nido sta prendendo forma 🌿<br>Se desiderate contribuire, interamente o parzialmente, a uno dei regali, potete farlo qui in modo semplice. Grazie di cuore ❤️!</p>'+
+  '</div>';
 }
 
 function renderGift(g){
-  const r=contribs[g.id]||0;
-  const pct=Math.round(r/g.price*100);
-  const done=pct>=100;
-  const img=getImg(g);
-  const thumb=img?`<img src="${img}" alt="">`:`${SVG.gift}`;
-  const pctColor=pct>=100?'#8a9a7e':pct>50?'#a5aa6a':'#c0a44e';
-  const barBg='#8a9a7e';
-  return`<div class="gift-card${done?' complete':''}"><div class="gift-row">
-    <div class="gift-thumb${done?' done':''}">${thumb}</div>
-    <div class="gift-body">
-      <div class="gift-header">
-        <div class="gift-name">${esc(g.name)}</div>
-        ${done?'<span class="badge">Completato ✓</span>':''}
-      </div>
-      <div class="gift-stats">
-        <span>${fmt(r)} di ${fmt(g.price)}</span>
-        <span class="gift-pct" style="color:${pctColor}">${pct}%</span>
-      </div>
-      <div class="bar-bg"><div class="bar-fill" style="width:${Math.min(pct,100)}%;background:${barBg}"></div></div>
-      <div class="gift-actions">
-        ${!done?`<button class="btn-contribute" onclick="openContrib('${g.id}')">${SVG.heart} Contribuisci</button>`:''}
-        <button class="btn-see" onclick="viewGiftImg('${g.id}')">${SVG.eye} Vedi regalo</button>
-        ${g.link?`<a href="${g.link}" target="_blank" rel="noopener noreferrer" class="btn-link">Link regalo ${SVG.ext}</a>`:''}
-      </div>
-    </div>
-  </div></div>`;
+  var r=contribs[g.id]||0;
+  var pct=Math.round(r/g.price*100);
+  var done=pct>=100;
+  var img=getImg(g);
+  var thumb=img?'<img src="'+img+'" alt="">':SVG.gift;
+  var pctColor=pct>=100?'#8a9a7e':pct>50?'#a5aa6a':'#c0a44e';
+  return '<div class="gift-card'+(done?' complete':'')+'"><div class="gift-row">'+
+    '<div class="gift-thumb'+(done?' done':'')+'">'+thumb+'</div>'+
+    '<div class="gift-body">'+
+      '<div class="gift-header"><div class="gift-name">'+esc(g.name)+'</div>'+(done?'<span class="badge">Completato ✓</span>':'')+'</div>'+
+      '<div class="gift-stats"><span>'+fmt(r)+' di '+fmt(g.price)+'</span><span class="gift-pct" style="color:'+pctColor+'">'+pct+'%</span></div>'+
+      '<div class="bar-bg"><div class="bar-fill" style="width:'+Math.min(pct,100)+'%;background:#8a9a7e"></div></div>'+
+      '<div class="gift-actions">'+
+        (!done?'<button class="btn-contribute" onclick="openContrib(\''+g.id+'\')">'+SVG.heart+' Contribuisci</button>':'')+
+        '<button class="btn-see" onclick="viewGiftImg(\''+g.id+'\')">'+SVG.eye+' Vedi regalo</button>'+
+        (g.link?'<a href="'+g.link+'" target="_blank" rel="noopener noreferrer" class="btn-link">Link regalo '+SVG.ext+'</a>':'')+
+      '</div>'+
+    '</div></div></div>';
 }
 
 function renderContrib(){
-  const g=gifts.find(x=>x.id===modal);
-  if(!g)return'';
-  const r=contribs[g.id]||0;
-  const left=g.price-r;
-  let body='';
+  var g=null;
+  for(var i=0;i<gifts.length;i++){if(gifts[i].id===modal){g=gifts[i];break}}
+  if(!g)return '';
+  var r=contribs[g.id]||0;
+  var left=g.price-r;
+  var body='';
   if(modalDone){
-    body=`<div style="text-align:center;padding:16px 0">
-      <div class="success-icon">${SVG.check}</div>
-      <h3 style="font-size:17px;margin:0 0 6px">Grazie, ${esc(modalName)}!</h3>
-      <p style="color:#999;font-size:13px;margin:0 0 18px">Il tuo contributo è stato registrato.</p>
-      <button class="btn-primary" style="width:auto;padding:10px 30px" onclick="closeContrib()">Chiudi</button>
-    </div>`;
+    body='<div style="text-align:center;padding:16px 0">'+
+      '<div class="success-icon">'+SVG.check+'</div>'+
+      '<h3 style="font-size:17px;margin:0 0 6px">Grazie, '+esc(modalName)+'!</h3>'+
+      '<p style="color:#999;font-size:13px;margin:0 0 18px">Il tuo contributo è stato registrato.</p>'+
+      '<button class="btn-primary" style="width:auto;padding:10px 30px" onclick="closeContrib()">Chiudi</button></div>';
   }else if(modalStep===1){
-    body=`<label class="field-label">Il tuo nome</label>
-      <input class="field-input" id="cName" placeholder="es. Marco">
-      <label class="field-label">Quanto vuoi contribuire (£)</label>
-      <input class="field-input" id="cAmount" placeholder="Max ${fmt(left)}" inputmode="decimal">
-      <button class="btn-primary" onclick="goStep2()">Avanti →</button>`;
+    body='<label class="field-label">Il tuo nome</label>'+
+      '<input class="field-input" id="cName" placeholder="es. Marco">'+
+      '<label class="field-label">Quanto vuoi contribuire (£)</label>'+
+      '<input class="field-input" id="cAmount" placeholder="Max '+fmt(left)+'" inputmode="decimal">'+
+      '<button class="btn-primary" onclick="goStep2()">Avanti →</button>';
   }else{
-    const caus='Lista Baby - '+g.name+' - '+modalName;
-    body=`<div class="bank-box">
-      <p class="bank-title">Dettagli per il bonifico</p>
-      <div class="bank-details">
-        <div><strong>Intestatario:</strong> Andrea Chiarenza &amp; Elisa Pedone</div>
-        <div><strong>IBAN:</strong> GB33 REVO 2301 2034 7187 31</div>
-        <div><strong>BIC / SWIFT:</strong> REVOGB21</div>
-        <div><strong>Importo:</strong> ${fmt(Number(modalAmount))}</div>
-        <div style="margin-top:8px"><strong>Causale:</strong></div>
-        <div class="bank-causale">${esc(caus)}</div>
-      </div>
-      <button class="btn-copy" onclick="copyCausale()">${SVG.copy} ${modalCopied?'Copiata!':'Copia causale'}</button>
-    </div>
-    <div class="btn-row">
-      <button class="btn-back" onclick="goStep1()">← Indietro</button>
-      <button class="btn-confirm" onclick="doConfirmContrib()">${SVG.check} Ho fatto il bonifico</button>
-    </div>`;
+    var caus='Lista Baby - '+g.name+' - '+modalName;
+    body='<div class="bank-box"><p class="bank-title">Dettagli per il bonifico</p>'+
+      '<div class="bank-details">'+
+      '<div><strong>Intestatario:</strong> Andrea Chiarenza &amp; Elisa Pedone</div>'+
+      '<div><strong>IBAN:</strong> GB33 REVO 2301 2034 7187 31</div>'+
+      '<div><strong>BIC / SWIFT:</strong> REVOGB21</div>'+
+      '<div><strong>Importo:</strong> '+fmt(Number(modalAmount))+'</div>'+
+      '<div style="margin-top:8px"><strong>Causale:</strong></div>'+
+      '<div class="bank-causale">'+esc(caus)+'</div></div>'+
+      '<button class="btn-copy" onclick="copyCausale()">'+SVG.copy+' '+(modalCopied?'Copiata!':'Copia causale')+'</button></div>'+
+      '<div class="btn-row"><button class="btn-back" onclick="goStep1()">← Indietro</button>'+
+      '<button class="btn-confirm" onclick="doConfirmContrib()">'+SVG.check+' Ho fatto il bonifico</button></div>';
   }
-  return`<div class="overlay" onclick="closeContrib()"><div class="modal" onclick="event.stopPropagation()">
-    <button class="modal-close" onclick="closeContrib()">${SVG.x}</button>
-    <div class="modal-inner">
-      <h2 class="modal-title">${esc(g.name)}</h2>
-      <p class="modal-sub">Prezzo: ${fmt(g.price)} — Raccolto: ${fmt(r)}</p>
-      ${body}
-    </div>
-  </div></div>`;
+  return '<div class="overlay" onclick="closeContrib()"><div class="modal" onclick="event.stopPropagation()">'+
+    '<button class="modal-close" onclick="closeContrib()">'+SVG.x+'</button>'+
+    '<div class="modal-inner"><h2 class="modal-title">'+esc(g.name)+'</h2>'+
+    '<p class="modal-sub">Prezzo: '+fmt(g.price)+' — Raccolto: '+fmt(r)+'</p>'+body+'</div></div></div>';
 }
 
 function renderImg(){
-  const g=gifts.find(x=>x.id===viewImg);
-  if(!g)return'';
-  const img=getImg(g);
-  let content='';
+  var g=null;
+  for(var i=0;i<gifts.length;i++){if(gifts[i].id===viewImg){g=gifts[i];break}}
+  if(!g)return '';
+  var img=getImg(g);
+  var content='';
   if(img){
-    content=`<img src="${img}" alt="${esc(g.name)}" onerror="this.style.display='none';document.getElementById('imgFallback').style.display='block'">
-      <p class="img-fallback" id="imgFallback" style="display:none">Immagine non disponibile${g.link?'<br><br><a href="'+g.link+'" target="_blank">Vedi sul sito del negozio ↗</a>':''}</p>`;
+    content='<img src="'+img+'" alt="'+esc(g.name)+'" onerror="this.style.display=\'none\';document.getElementById(\'imgFB\').style.display=\'block\'">'+
+      '<p class="img-fallback" id="imgFB" style="display:none">Immagine non disponibile'+(g.link?'<br><br><a href="'+g.link+'" target="_blank">Vedi sul sito del negozio ↗</a>':'')+'</p>';
   }else{
-    content=`<p class="img-fallback">Immagine non ancora disponibile${g.link?'<br><br><a href="'+g.link+'" target="_blank">Vedi sul sito del negozio ↗</a>':''}</p>`;
+    content='<p class="img-fallback">Immagine non ancora disponibile'+(g.link?'<br><br><a href="'+g.link+'" target="_blank">Vedi sul sito del negozio ↗</a>':'')+'</p>';
   }
-  return`<div class="img-overlay" onclick="closeImg()">
-    <button class="img-close" onclick="closeImg()">${SVG.x}</button>
-    <div onclick="event.stopPropagation()" style="text-align:center">
-      <p class="img-name">${esc(g.name)}</p>
-      ${content}
-    </div>
-  </div>`;
+  return '<div class="img-overlay" onclick="closeImg()">'+
+    '<button class="img-close" onclick="closeImg()">'+SVG.x+'</button>'+
+    '<div onclick="event.stopPropagation()" style="text-align:center">'+
+    '<p class="img-name">'+esc(g.name)+'</p>'+content+'</div></div>';
 }
 
 function renderAdmin(){
-  let body='';
+  var body='';
   if(!adminAuth){
-    body=`<label class="field-label">Password</label>
-      <input class="field-input" type="password" id="adminPwd" placeholder="Inserisci password" onkeydown="if(event.key==='Enter')tryLogin()">
-      <div id="pwdErr"></div>
-      <button class="btn-primary" style="margin-top:8px" onclick="tryLogin()">Accedi</button>`;
+    body='<label class="field-label">Password</label>'+
+      '<input class="field-input" type="password" id="adminPwd" placeholder="Inserisci password" onkeydown="if(event.key===\'Enter\')tryLogin()">'+
+      '<div id="pwdErr"></div>'+
+      '<button class="btn-primary" style="margin-top:8px" onclick="tryLogin()">Accedi</button>';
   }else{
-    body=`<div class="admin-section">
-      <p class="admin-section-title">Aggiungi regalo</p>
-      <input class="admin-input" id="newName" placeholder="Nome regalo">
-      <div class="admin-input-row">
-        <input class="admin-input" style="margin:0" id="newPrice" placeholder="Prezzo (£)" inputmode="decimal">
-        <input class="admin-input" style="margin:0;flex:2" id="newLink" placeholder="Link (opzionale)">
-      </div>
-      <input class="admin-input" id="newImg" placeholder="URL immagine (opzionale)">
-      <button class="btn-add" onclick="addGift()">${SVG.plus} Aggiungi</button>
-    </div>
-    <p class="admin-section-title">Regali attuali</p>`;
-    gifts.forEach(g=>{
-      const r=contribs[g.id]||0;
-      const del=confirmDelId===g.id;
-      body+=`<div class="admin-gift">
-        <div class="admin-gift-info">
-          <div class="admin-gift-name">${esc(g.name)}</div>
-          <div class="admin-gift-meta">${fmt(g.price)} — raccolto: ${fmt(r)}</div>
-        </div>
-        ${r>0?`<button class="btn-reset" onclick="resetC('${g.id}')">${SVG.reset} Azzera</button>`:''}
-        ${del
-          ?`<button class="btn-confirm-del" onclick="delGift('${g.id}')">Conferma</button><button class="btn-cancel-del" onclick="cancelDel()">No</button>`
-          :`<button class="btn-delete" onclick="startDel('${g.id}')">${SVG.trash} Elimina</button>`}
-      </div>`;
-    });
+    body='<div class="admin-section"><p class="admin-section-title">Aggiungi regalo</p>'+
+      '<input class="admin-input" id="newName" placeholder="Nome regalo">'+
+      '<div class="admin-input-row"><input class="admin-input" style="margin:0" id="newPrice" placeholder="Prezzo (£)" inputmode="decimal">'+
+      '<input class="admin-input" style="margin:0;flex:2" id="newLink" placeholder="Link (opzionale)"></div>'+
+      '<input class="admin-input" id="newImg" placeholder="URL immagine (opzionale)">'+
+      '<button class="btn-add" onclick="addGift()">'+SVG.plus+' Aggiungi</button></div>'+
+      '<p class="admin-section-title">Regali attuali</p>';
+    for(var i=0;i<gifts.length;i++){
+      var g=gifts[i];
+      var r=contribs[g.id]||0;
+      var del=confirmDelId===g.id;
+      body+='<div class="admin-gift"><div class="admin-gift-info">'+
+        '<div class="admin-gift-name">'+esc(g.name)+'</div>'+
+        '<div class="admin-gift-meta">'+fmt(g.price)+' — raccolto: '+fmt(r)+'</div></div>'+
+        (r>0?'<button class="btn-reset" onclick="resetC(\''+g.id+'\')">'+SVG.reset+' Azzera</button>':'')+
+        (del?'<button class="btn-confirm-del" onclick="delGift(\''+g.id+'\')">Conferma</button><button class="btn-cancel-del" onclick="cancelDel()">No</button>'
+        :'<button class="btn-delete" onclick="startDel(\''+g.id+'\')">'+SVG.trash+' Elimina</button>')+
+        '</div>';
+    }
   }
-  return`<div class="overlay" onclick="closeAdmin()"><div class="modal modal-admin" onclick="event.stopPropagation()">
-    <button class="modal-close" onclick="closeAdmin()">${SVG.x}</button>
-    <div class="modal-inner">
-      <h2 style="font-size:18px;font-weight:700;margin:0 0 4px;color:#5a6b52">Pannello Admin</h2>
-      <p class="modal-sub">Gestisci regali e contributi</p>
-      ${body}
-    </div>
-  </div></div>`;
+  return '<div class="overlay" onclick="closeAdmin()"><div class="modal modal-admin" onclick="event.stopPropagation()">'+
+    '<button class="modal-close" onclick="closeAdmin()">'+SVG.x+'</button>'+
+    '<div class="modal-inner"><h2 style="font-size:18px;font-weight:700;margin:0 0 4px;color:#5a6b52">Pannello Admin</h2>'+
+    '<p class="modal-sub">Gestisci regali e contributi</p>'+body+'</div></div></div>';
 }
-
-/* ── All global handlers ── */
 
 window.openContrib=function(id){modal=id;modalStep=1;modalName="";modalAmount="";modalCopied=false;modalDone=false;render()};
 window.closeContrib=function(){modal=null;render()};
@@ -379,17 +347,17 @@ window.goStep2=function(){
   modalName=n;modalAmount=a;modalStep=2;render();
 };
 window.doConfirmContrib=function(){
-  var g=gifts.find(function(x){return x.id===modal});
+  var g=null;
+  for(var i=0;i<gifts.length;i++){if(gifts[i].id===modal){g=gifts[i];break}}
   if(!g)return;
-  var a=Number(modalAmount);
-  var prev=contribs[g.id]||0;
-  var left=g.price-prev;
+  var a=Number(modalAmount),prev=contribs[g.id]||0,left=g.price-prev;
   if(left<=0||a<=0)return;
   contribs[g.id]=prev+Math.min(a,left);
   saveContribs();modalDone=true;render();
 };
 window.copyCausale=function(){
-  var g=gifts.find(function(x){return x.id===modal});
+  var g=null;
+  for(var i=0;i<gifts.length;i++){if(gifts[i].id===modal){g=gifts[i];break}}
   if(!g)return;
   var txt='Lista Baby - '+g.name+' - '+modalName;
   try{navigator.clipboard.writeText(txt)}catch(e){}
