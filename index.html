@@ -1,565 +1,434 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lista Regali Nascita</title>
-  <style>
-    :root {
-      --bg: #f8f4ef;
-      --card: #ffffff;
-      --text: #3e2f2a;
-      --muted: #8b7c74;
-      --accent: #b88c7d;
-      --accent-dark: #9e7467;
-      --line: #eee4dd;
-      --shadow: 0 12px 30px rgba(80, 53, 42, 0.08);
-      --radius: 22px;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      background: linear-gradient(180deg, #fbf7f3 0%, #f4ede7 100%);
-      color: var(--text);
-    }
-
-    .hero {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 56px 20px 24px;
-      text-align: center;
-    }
-
-    .hero h1 {
-      margin: 0 0 14px;
-      font-size: 2.7rem;
-      line-height: 1.1;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-    }
-
-    .hero p {
-      margin: 0 auto;
-      max-width: 760px;
-      font-size: 1.05rem;
-      line-height: 1.7;
-      color: var(--muted);
-    }
-
-    .hero .signature {
-      margin-top: 18px;
-      font-size: 0.98rem;
-      color: var(--muted);
-    }
-
-    .grid {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 18px 20px 56px;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 22px;
-    }
-
-    .card {
-      background: var(--card);
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 22px;
-      display: flex;
-      flex-direction: column;
-      min-height: 280px;
-    }
-
-    .gift-icon {
-      width: 56px;
-      height: 56px;
-      border-radius: 18px;
-      display: grid;
-      place-items: center;
-      margin: 0 auto 14px;
-      background: #f7eee9;
-      font-size: 1.7rem;
-    }
-
-    .card h3 {
-      margin: 0 0 10px;
-      text-align: center;
-      font-size: 1.25rem;
-      line-height: 1.35;
-      min-height: 54px;
-    }
-
-    .price-row,
-    .collected-row,
-    .percent-row {
-      font-size: 0.98rem;
-      color: var(--muted);
-      margin: 6px 0;
-      text-align: center;
-    }
-
-    .progress {
-      width: 100%;
-      height: 12px;
-      background: #efe5de;
-      border-radius: 999px;
-      overflow: hidden;
-      margin: 16px 0 6px;
-    }
-
-    .progress-bar {
-      height: 100%;
-      background: linear-gradient(90deg, #d4aa98 0%, #b88c7d 100%);
-      border-radius: 999px;
-    }
-
-    .actions {
-      margin-top: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      padding-top: 18px;
-    }
-
-    .btn,
-    .btn-outline {
-      border: none;
-      border-radius: 14px;
-      padding: 12px 16px;
-      font-size: 0.96rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: 0.2s ease;
-      text-decoration: none;
-      text-align: center;
-      display: inline-block;
-    }
-
-    .btn {
-      background: var(--accent);
-      color: white;
-    }
-
-    .btn:hover {
-      background: var(--accent-dark);
-    }
-
-    .btn-outline {
-      background: #f8f2ee;
-      color: var(--accent-dark);
-      border: 1px solid #eadbd2;
-    }
-
-    .btn-outline:hover {
-      background: #f3e8e1;
-    }
-
-    .btn:disabled,
-    .btn-outline:disabled {
-      opacity: 0.65;
-      cursor: not-allowed;
-    }
-
-    .loading,
-    .error {
-      grid-column: 1 / -1;
-      text-align: center;
-      color: var(--muted);
-      font-size: 1rem;
-      padding: 30px 10px;
-    }
-
-    .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(48, 30, 22, 0.38);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 18px;
-      z-index: 999;
-    }
-
-    .modal-backdrop.show {
-      display: flex;
-    }
-
-    .modal {
-      width: 100%;
-      max-width: 560px;
-      background: white;
-      border-radius: 26px;
-      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.18);
-      overflow: hidden;
-    }
-
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 22px 24px 12px;
-    }
-
-    .modal-title {
-      margin: 0;
-      font-size: 1.5rem;
-      color: var(--text);
-    }
-
-    .close-btn {
-      border: none;
-      background: transparent;
-      font-size: 1rem;
-      color: var(--muted);
-      cursor: pointer;
-      padding: 6px 8px;
-    }
-
-    .modal-body {
-      padding: 0 24px 24px;
-    }
-
-    .gift-name {
-      margin: 0 0 8px;
-      color: var(--muted);
-      font-size: 0.98rem;
-    }
-
-    .field {
-      margin: 16px 0;
-    }
-
-    .field label {
-      display: block;
-      margin-bottom: 8px;
-      font-size: 0.95rem;
-      color: var(--text);
-      font-weight: 600;
-    }
-
-    .field input {
-      width: 100%;
-      padding: 13px 14px;
-      border-radius: 14px;
-      border: 1px solid #e7dad2;
-      background: #fcfaf8;
-      font-size: 1rem;
-      outline: none;
-    }
-
-    .field input:focus {
-      border-color: #d6b3a4;
-      background: #fff;
-    }
-
-    .bank-box {
-      margin-top: 18px;
-      background: #f8f3ef;
-      border: 1px solid #eee1d9;
-      border-radius: 18px;
-      padding: 18px;
-    }
-
-    .bank-box h4 {
-      margin: 0 0 14px;
-      font-size: 1rem;
-    }
-
-    .bank-detail {
-      display: grid;
-      grid-template-columns: 140px 1fr;
-      gap: 8px 12px;
-      font-size: 0.95rem;
-      margin-bottom: 14px;
-    }
-
-    .bank-detail strong {
-      color: var(--text);
-    }
-
-    .cause-box {
-      margin-top: 14px;
-      background: white;
-      border: 1px dashed #d8c3b7;
-      border-radius: 14px;
-      padding: 14px;
-      font-size: 0.94rem;
-      color: var(--text);
-      word-break: break-word;
-    }
-
-    .modal-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 16px;
-    }
-
-    .small-note {
-      margin-top: 12px;
-      font-size: 0.9rem;
-      color: var(--muted);
-      line-height: 1.5;
-    }
-
-    @media (max-width: 640px) {
-      .hero {
-        padding-top: 40px;
-      }
-
-      .hero h1 {
-        font-size: 2.1rem;
-      }
-
-      .modal {
-        border-radius: 22px;
-      }
-
-      .bank-detail {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Lista Baby - Andrea & Elisa</title>
+<meta name="description" content="Lista nascita di Andrea & Elisa. Contribuisci ai regali per il nostro piccolo in arrivo!">
+<meta property="og:title" content="Lista Baby - Andrea & Elisa 🌿">
+<meta property="og:description" content="Il nostro piccolo nido sta prendendo forma. Aiutaci a preparare tutto!">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:#e8e6de;color:#3a3a3a;min-height:100vh;-webkit-font-smoothing:antialiased}
+.hero{background:linear-gradient(180deg,#9aac8e 0%,#a8b49e 50%,#c4c4b4 80%,#e8e6de 100%);padding:44px 20px 48px;text-align:center;position:relative}
+.hero-label{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,.95);margin-bottom:6px;font-weight:700}
+.hero h1{font-size:30px;font-weight:300;color:#fff;letter-spacing:.5px;margin-bottom:2px}
+.hero p{color:#3d4a35;font-size:13px;font-weight:400;line-height:1.6;max-width:480px;margin:6px auto 0}
+.admin-btn{position:absolute;top:16px;right:16px;background:rgba(255,255,255,.2);border:none;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:rgba(255,255,255,.6)}
+.container{max-width:700px;margin:0 auto;padding:20px 16px 40px}
+.gift-card{background:#fff;border-radius:14px;padding:16px 18px;border:1px solid #e8e5df;margin-bottom:10px}
+.gift-card.complete{border:1.5px solid #8a9a7e;opacity:.8}
+.gift-row{display:flex;align-items:flex-start;gap:12px}
+.gift-thumb{width:52px;height:52px;border-radius:10px;background:#f0ede7;display:flex;align-items:center;justify-content:center;color:#8a9a7e;flex-shrink:0;overflow:hidden}
+.gift-thumb img{width:100%;height:100%;object-fit:cover}
+.gift-thumb.done{opacity:.6}
+.gift-body{flex:1;min-width:0}
+.gift-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px}
+.gift-name{font-size:14px;font-weight:600;line-height:1.35;flex:1;padding-right:8px}
+.badge{background:#8a9a7e;color:#fff;font-size:10px;padding:3px 10px;border-radius:10px;font-weight:700;white-space:nowrap}
+.gift-stats{display:flex;justify-content:space-between;font-size:12px;color:#999;margin-bottom:5px}
+.gift-pct{font-weight:700}
+.bar-bg{height:6px;background:#f0ede7;border-radius:3px;overflow:hidden;margin-bottom:12px}
+.bar-fill{height:100%;border-radius:3px;transition:width .5s ease}
+.gift-actions{display:flex;gap:6px;flex-wrap:wrap}
+.btn-contribute{background:linear-gradient(135deg,#8a9a7e,#a5aa6a);color:#fff;border:none;border-radius:8px;padding:7px 12px;font-size:11px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:4px}
+.btn-see{background:#eef3ea;color:#5a6b52;border:1px solid #c5d4b8;border-radius:8px;padding:7px 12px;font-size:11px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:4px}
+.btn-link{background:#f5f3ee;color:#6b7c6b;border:none;border-radius:8px;padding:7px 12px;font-size:11px;font-weight:600;cursor:pointer;text-decoration:none;display:flex;align-items:center;gap:4px}
+.footer{text-align:center;color:#c5bfa8;font-size:11px;padding:0 16px;margin-top:14px}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;z-index:999;padding:16px;backdrop-filter:blur(3px)}
+.modal{background:#fff;border-radius:20px;width:100%;max-width:400px;max-height:88vh;overflow:auto;position:relative}
+.modal-admin{max-width:480px}
+.modal-close{position:absolute;top:12px;right:12px;background:none;border:none;cursor:pointer;color:#bbb;padding:4px;z-index:2}
+.modal-inner{padding:28px 22px 22px}
+.modal-title{font-size:17px;font-weight:600;margin:0 0 4px;padding-right:30px;line-height:1.3}
+.modal-sub{color:#999;font-size:12px;margin:0 0 20px}
+.field-label{font-size:12px;font-weight:600;color:#666;display:block;margin-bottom:5px}
+.field-input{width:100%;padding:10px 14px;border:1.5px solid #e0ddd5;border-radius:10px;font-size:14px;margin-bottom:14px;outline:none;background:#fafaf7;font-family:inherit}
+.field-input:focus{border-color:#8a9a7e}
+.btn-primary{width:100%;background:linear-gradient(135deg,#8a9a7e,#a5aa6a);color:#fff;border:none;border-radius:10px;padding:11px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit}
+.bank-box{background:#f9f8f4;border-radius:14px;padding:16px;margin-bottom:14px;border:1px solid #e8e5df}
+.bank-title{font-size:12px;font-weight:700;color:#6b7c6b;margin:0 0 10px}
+.bank-details{font-size:12.5px;line-height:1.9;color:#555}
+.bank-causale{background:#fff;border-radius:8px;padding:8px 12px;margin-top:4px;font-size:11.5px;color:#444;border:1px solid #e8e5df;word-break:break-word;line-height:1.5}
+.btn-copy{margin-top:10px;background:#fff;border:1.5px solid #8a9a7e;border-radius:8px;padding:7px 14px;font-size:12px;color:#6b7c6b;cursor:pointer;display:inline-flex;align-items:center;gap:5px;font-weight:600;font-family:inherit}
+.btn-row{display:flex;gap:8px}
+.btn-back{padding:11px 16px;background:#f0ede7;border:none;border-radius:10px;font-size:12px;color:#999;cursor:pointer;font-weight:600;font-family:inherit}
+.btn-confirm{flex:1;background:linear-gradient(135deg,#8a9a7e,#a5aa6a);color:#fff;border:none;border-radius:10px;padding:11px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;font-family:inherit}
+.success-icon{width:52px;height:52px;border-radius:50%;background:#8a9a7e;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;color:#fff}
+.admin-section{background:#f9f8f4;border-radius:14px;padding:16px;margin-bottom:20px;border:1px solid #e8e5df}
+.admin-section-title{font-size:13px;font-weight:700;color:#5a6b52;margin:0 0 12px}
+.admin-input{width:100%;padding:9px 12px;border:1.5px solid #e0ddd5;border-radius:8px;font-size:13px;margin-bottom:8px;outline:none;background:#fff;font-family:inherit}
+.admin-input:focus{border-color:#8a9a7e}
+.admin-input-row{display:flex;gap:8px;margin-bottom:8px}
+.admin-input-row input{flex:1}
+.btn-add{background:#5a6b52;color:#fff;border:none;border-radius:8px;padding:9px 20px;font-size:12px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:5px;font-family:inherit}
+.admin-gift{display:flex;align-items:center;gap:10px;background:#f9f8f4;border-radius:10px;padding:10px 12px;border:1px solid #e8e5df;margin-bottom:6px}
+.admin-gift-info{flex:1;min-width:0}
+.admin-gift-name{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.admin-gift-meta{font-size:11px;color:#999}
+.btn-reset{background:#fff3cd;border:1px solid #e0d08a;border-radius:8px;padding:6px 10px;font-size:11px;color:#8a7a2a;cursor:pointer;display:flex;align-items:center;gap:4px;font-weight:600;white-space:nowrap;flex-shrink:0;font-family:inherit}
+.btn-delete{background:#fde8e8;border:1px solid #f0c0c0;border-radius:8px;padding:6px 10px;font-size:11px;color:#c0392b;cursor:pointer;display:flex;align-items:center;gap:4px;font-weight:600;white-space:nowrap;flex-shrink:0;font-family:inherit}
+.btn-confirm-del{background:#d9534f;color:#fff;border:none;border-radius:8px;padding:6px 10px;font-size:11px;cursor:pointer;font-weight:600;font-family:inherit}
+.btn-cancel-del{background:#e8e5df;color:#666;border:none;border-radius:8px;padding:6px 8px;font-size:11px;cursor:pointer;font-weight:600;font-family:inherit}
+.error-text{color:#d9534f;font-size:12px;margin:-8px 0 10px}
+.loading{min-height:100vh;display:flex;align-items:center;justify-content:center;background:#e8e6de}
+.loading p{color:#8a9a7e;font-size:16px}
+.img-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);display:flex;align-items:center;justify-content:center;z-index:1001;padding:16px;backdrop-filter:blur(4px)}
+.img-overlay img{max-width:92%;max-height:78vh;border-radius:14px;box-shadow:0 8px 32px rgba(0,0,0,.3);object-fit:contain;background:#fff}
+.img-close{position:fixed;top:16px;right:16px;background:rgba(255,255,255,.9);border:none;border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#555;z-index:1002;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.img-name{color:#fff;font-size:14px;font-weight:600;margin-bottom:10px;text-align:center;text-shadow:0 1px 4px rgba(0,0,0,.3)}
+.img-fallback{color:rgba(255,255,255,.7);font-size:14px;padding:40px 20px;text-align:center}
+.img-fallback a{color:#fff;text-decoration:underline}
+@media(max-width:400px){.gift-name{font-size:13px}.gift-actions{gap:5px}.btn-contribute,.btn-see,.btn-link{font-size:10px;padding:6px 9px}}
+</style>
 </head>
 <body>
-  <section class="hero">
-    <h1>Lista Regali Nascita</h1>
-    <p>
-      Siamo felicissimi di condividere questo momento speciale con voi. Se desiderate contribuire
-      a uno dei regali per il nostro bambino, potete farlo qui in modo semplice. Grazie di cuore
-      per il vostro affetto ❤️
-    </p>
-    <div class="signature">Fatto con amore per amici e famiglia.</div>
-  </section>
+<div id="app"><div class="loading"><p>Caricamento lista...</p></div></div>
 
-  <main id="list" class="grid">
-    <div class="loading">Caricamento...</div>
-  </main>
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
+import{getFirestore,doc,getDoc,setDoc,onSnapshot}from"https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
 
-  <div id="modalBackdrop" class="modal-backdrop">
-    <div class="modal">
-      <div class="modal-header">
-        <h2 class="modal-title">Contribuisci</h2>
-        <button class="close-btn" onclick="closeModal()">Chiudi</button>
+const db=getFirestore(initializeApp({
+  apiKey:"AIzaSyDxWFchDvpRr08C3l1osjxUYEFILtsEfoE",
+  authDomain:"lista-baby.firebaseapp.com",
+  projectId:"lista-baby",
+  storageBucket:"lista-baby.firebasestorage.app",
+  messagingSenderId:"607449847043",
+  appId:"1:607449847043:web:7957fb3d24629e95658536"
+}));
+
+/* ── Image lookup: by ID, then by name (lowercase) ── */
+const IMG={
+  "s1":"https://www.mamasandpapas.com/cdn/shop/files/tommee-tippee-nappy-bins-tommee-tippee-twist-and-click-advanced-nappy-bin-34435138748581_1024x1024@2x.jpg?v=1686815183",
+  "s2":"https://images.dunelm.com/30691902.jpg?$standardplayerdefault$&img404=noimagedefault",
+  "s3":"https://media.johnlewiscontent.com/i/JohnLewis/238911547?fmt=auto&$background-off-white$&wid=640&hei=853",
+  "s4":"https://xcdn.next.co.uk/common/items/default/default/itemimages/3_4Ratio/product/lge/W24060s.jpg?im=Resize,width=750",
+  "s5":"https://static.zarahome.net/assets/public/8b48/6293/ec9e4333a371/c3f2b1885a50/43699004999-a7/43699004999-a7.jpg?ts=1771865094145&f=auto&w=1190",
+  "s6":"https://static.zarahome.net/assets/public/fd78/9886/bd8147249f4b/5bfecd52216f/40610004733-a7/40610004733-a7.jpg?ts=1772027974209&f=auto&w=1190",
+  "s7":"https://neutrumbear.com/wp-content/uploads/2024/11/Knitted-Pram-Cosy_0002_DSC00670-600x600.webp",
+  "s8":"https://xcdn.next.co.uk/common/items/default/default/itemimages/3_4Ratio/product/lge/H74513s2.jpg?im=Resize,width=750",
+  "m1":"https://www.mamasandpapas.com/cdn/shop/products/aquascale-baths-aquascale-trade-v3-digital-baby-bath-white-30881021198501_1024x1024@2x.jpg?v=1628426270",
+  "m2":"https://media.johnlewiscontent.com/i/JohnLewis/109850016?fmt=auto&$background-off-white$&wid=640&hei=853",
+  "m3":"https://m.media-amazon.com/images/I/81CjcXRu3qL._AC_SX679_.jpg",
+  "m4":"https://www.ikea.com/gb/en/images/products/skoenast-foam-mattress-for-cot__1451311_pe990673_s5.jpg?f=xl",
+  "m5":"https://m.media-amazon.com/images/I/51m+4Ucsm3L._AC_SX679_.jpg",
+  "g1":"https://icklebubba.com/cdn/shop/files/10-010-300-151_02.jpg?v=1770804068&width=1960",
+  "g2":"https://ukbabycentre.com/cdn/shop/products/ickle-bubba-car-seats-ickle-bubba-stratus-i-size-car-seat-and-isofix-base-black-5056515025873-31939885793416.webp?v=1675443511",
+  "g3":"https://m.media-amazon.com/images/I/51eimYLwJdL._AC_SX679_.jpg",
+  "g4":"https://www.ikea.com/gb/en/images/products/myllra-cot-with-drawer-beige__1377871_pe960998_s5.jpg?f=xl",
+  "g5":"https://a.storyblok.com/f/187315/1667x2500/42b02ab20f/021026-baby-carrier-mini-beige-woven-pp-babybjorn-08.jpg/m/1800x2699/smart/filters:format(avif):quality(80)"
+};
+const IMG_NAME={
+  "changing table-round panels-green":"https://m.media-amazon.com/images/I/51m+4Ucsm3L._AC_SX679_.jpg",
+  "palestrina-tummy time-loamy":"https://m.media-amazon.com/images/I/81CjcXRu3qL._AC_SX679_.jpg",
+  "car seat+isofix base":"https://ukbabycentre.com/cdn/shop/products/ickle-bubba-car-seats-ickle-bubba-stratus-i-size-car-seat-and-isofix-base-black-5056515025873-31939885793416.webp?v=1675443511",
+  "seggiolone evolutivo":"https://m.media-amazon.com/images/I/51eimYLwJdL._AC_SX679_.jpg",
+  "marsupio (babybjörn mini)-beige":"https://a.storyblok.com/f/187315/1667x2500/42b02ab20f/021026-baby-carrier-mini-beige-woven-pp-babybjorn-08.jpg/m/1800x2699/smart/filters:format(avif):quality(80)"
+};
+function getImg(g){return g.img||IMG[g.id]||IMG_NAME[g.name.toLowerCase()]||IMG_NAME[g.name.toLowerCase().trim()]||""}
+
+const DEFAULT_GIFTS=[
+  {id:"s1",name:"Cestino Pannolini Usati",price:14,link:"https://www.boots.com/tommee-tippee-twist-and-click-advanced-nappyd-disposal-bins-system-white-10259522"},
+  {id:"s2",name:"Lenzuolini - Opzione 1 (Safari)",price:15,link:"https://www.dunelm.com/product/safari-natural-100-cotton-pack-of-2-fitted-sheets-1000167433"},
+  {id:"s3",name:"Lenzuolini - Opzione 2 (John Lewis)",price:24,link:"https://www.johnlewis.com/john-lewis-safari-print-cotton-fitted-cotbed-sheet-70-x-140cm-pack-of-2/p5401791"},
+  {id:"s4",name:"Changing Bag",price:80,link:"https://www.next.co.uk/style/su697251/w24060"},
+  {id:"s5",name:"Copertina Leggera (Zara Home)",price:40,link:"https://www.zarahome.com/gb/knit-baby-blanket-l43699004"},
+  {id:"s6",name:"Fleece con palloncini ricamati",price:20,link:"https://www.zarahome.com/gb/fleece-baby-blanket-with-embroidered-balloons-l40610004"},
+  {id:"s7",name:"Scialle Sage Green (Neutrum Bear)",price:30,link:"https://neutrumbear.com/products/luxury-pram-cosy-lined-2/?attribute_pa_colour=sage-green&attribute_pa_personalisation=no"},
+  {id:"s8",name:"Sacca Nanna",price:20,link:"https://www.next.co.uk/style/su824252/h74513"},
+  {id:"m1",name:"Vaschetta Neonato (Aquascale Digital)",price:60,link:"https://www.mamasandpapas.com/products/aquascale-bath-v3-digital-baby-bath-544802701"},
+  {id:"m2",name:"Changing Table",price:72.83,link:"https://www.amazon.co.uk/dp/B0DG8XWB7F/"},
+  {id:"m3",name:"Sterilizzatore (Tommee Tippee Kit Completo)",price:99.99,link:"https://www.boots.com/tommee-tippee-complete-feeding-kit-black-10324037"},
+  {id:"m4",name:"Materassino Culletta (IKEA)",price:75,link:"https://www.ikea.com/gb/en/p/skoenast-foam-mattress-for-cot-70593593/"},
+  {id:"m5",name:"Palestrina / Tappetino Tummy Time",price:69.41,link:"https://www.amazon.co.uk/Ingenuity-Reversible-Duvet-Activity-Loamy/dp/B0812LDHDL/"},
+  {id:"g1",name:"Carrycot + Stroller + Footmuff + Seat Liner + Raincover",price:234,link:"https://icklebubba.com/products/stomp-urban-10-piece-travel-system-with-i-size-cirrus-car-seat-isofix-base?variant=48096053887260"},
+  {id:"g2",name:"Car Seat + ISOFIX Base + Window Blinds",price:145,link:""},
+  {id:"g3",name:"Seggiolone Evolutivo (Kinderkraft)",price:138,link:"https://www.amazon.co.uk/Kinderkraft-Highchair-Multifunctional-Ajustable-Detachable/dp/B0DDPRML5J/"},
+  {id:"g4",name:"Culletta con Cassetto (IKEA Myllra)",price:379,link:"https://www.ikea.com/gb/en/p/myllra-cot-with-drawer-beige-80597048/"},
+  {id:"g5",name:"Marsupio (BabyBjörn Mini)",price:89,link:"https://www.babybjorn.co.uk/products/baby-carriers/baby-carrier-mini/vintage-indigo-woven/"}
+];
+
+const ADMIN_PWD="Fagiolino26";
+const fmt=v=>`£${v.toFixed(2)}`;
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
+
+const SVG={
+  gift:`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg>`,
+  heart:`<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>`,
+  ext:`<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>`,
+  eye:`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`,
+  check:`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`,
+  x:`<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`,
+  copy:`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>`,
+  gear:`<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>`,
+  trash:`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>`,
+  reset:`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>`,
+  plus:`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>`
+};
+
+let gifts=[];
+let contribs={};
+let viewImg=null;
+let modal=null;
+let modalStep=1;
+let modalName="";
+let modalAmount="";
+let modalCopied=false;
+let modalDone=false;
+let adminOpen=false;
+let adminAuth=false;
+let confirmDelId=null;
+
+const giftsRef=doc(db,"registry","gifts");
+const contribsRef=doc(db,"registry","contributions");
+
+async function initData(){
+  try{
+    const gs=await getDoc(giftsRef);
+    gifts=gs.exists()?(gs.data().items||DEFAULT_GIFTS):DEFAULT_GIFTS;
+    if(!gs.exists())await setDoc(giftsRef,{items:DEFAULT_GIFTS});
+  }catch(e){gifts=DEFAULT_GIFTS;console.error(e)}
+  try{
+    const cs=await getDoc(contribsRef);
+    if(cs.exists())contribs=cs.data()||{};
+  }catch(e){console.error(e)}
+  onSnapshot(giftsRef,s=>{if(s.exists()){gifts=s.data().items||[];render()}});
+  onSnapshot(contribsRef,s=>{if(s.exists()){contribs=s.data()||{};render()}});
+  render();
+}
+
+async function saveGifts(){try{await setDoc(giftsRef,{items:gifts})}catch(e){console.error(e)}}
+async function saveContribs(){try{await setDoc(contribsRef,contribs)}catch(e){console.error(e)}}
+
+function render(){
+  document.getElementById("app").innerHTML=
+    renderHero()+
+    '<div class="container">'+gifts.map(renderGift).join('')+'</div>'+
+    '<p class="footer">Grazie di cuore per il vostro contributo 🌿</p>'+
+    (modal?renderContrib():'')+
+    (viewImg?renderImg():'')+
+    (adminOpen?renderAdmin():'');
+}
+
+function renderHero(){
+  return`<div class="hero">
+    <button class="admin-btn" onclick="openAdmin()">${SVG.gear}</button>
+    <div class="hero-label">LISTA BABY</div>
+    <h1>Andrea & Elisa</h1>
+    <p>Il nostro piccolo nido sta prendendo forma 🌿<br>Se desiderate contribuire, interamente o parzialmente, a uno dei regali, potete farlo qui in modo semplice. Grazie di cuore ❤️!</p>
+  </div>`;
+}
+
+function renderGift(g){
+  const r=contribs[g.id]||0;
+  const pct=Math.round(r/g.price*100);
+  const done=pct>=100;
+  const img=getImg(g);
+  const thumb=img?`<img src="${img}" alt="">`:`${SVG.gift}`;
+  const pctColor=pct>=100?'#8a9a7e':pct>50?'#a5aa6a':'#c0a44e';
+  const barBg='#8a9a7e';
+  return`<div class="gift-card${done?' complete':''}"><div class="gift-row">
+    <div class="gift-thumb${done?' done':''}">${thumb}</div>
+    <div class="gift-body">
+      <div class="gift-header">
+        <div class="gift-name">${esc(g.name)}</div>
+        ${done?'<span class="badge">Completato ✓</span>':''}
       </div>
-
-      <div class="modal-body">
-        <p id="selectedGift" class="gift-name"></p>
-
-        <div class="field">
-          <label for="amountInput">Importo del contributo (£)</label>
-          <input id="amountInput" type="number" min="0.01" step="0.01" placeholder="Es. 20" />
-        </div>
-
-        <div class="field">
-          <label for="nameInput">Il tuo nome (facoltativo)</label>
-          <input id="nameInput" type="text" placeholder="Es. Maria" />
-        </div>
-
-        <div class="bank-box">
-          <h4>Dettagli per il bonifico</h4>
-
-          <div class="bank-detail">
-            <strong>Intestatario</strong><span>Andrea Chiarenza / Elisa Pedone</span>
-            <strong>Sort code</strong><span>23-01-20</span>
-            <strong>Numero conto</strong><span>34718731</span>
-            <strong>IBAN</strong><span>GB33REVO2301718731</span>
-            <strong>BIC/SWIFT</strong><span>REVOGB21</span>
-          </div>
-
-          <strong>Causale</strong>
-          <div id="causeBox" class="cause-box">Verrà generata automaticamente</div>
-
-          <div class="modal-actions">
-            <button class="btn-outline" onclick="copyCause()">Copia causale</button>
-            <button id="confirmBtn" class="btn" onclick="confirmContribution()">Ho fatto il bonifico</button>
-          </div>
-
-          <div class="small-note">
-            Dopo aver effettuato il bonifico, clicca su “Ho fatto il bonifico” per aggiornare
-            l’avanzamento del regalo.
-          </div>
-        </div>
+      <div class="gift-stats">
+        <span>${fmt(r)} di ${fmt(g.price)}</span>
+        <span class="gift-pct" style="color:${pctColor}">${pct}%</span>
+      </div>
+      <div class="bar-bg"><div class="bar-fill" style="width:${Math.min(pct,100)}%;background:${barBg}"></div></div>
+      <div class="gift-actions">
+        ${!done?`<button class="btn-contribute" onclick="openContrib('${g.id}')">${SVG.heart} Contribuisci</button>`:''}
+        <button class="btn-see" onclick="viewGiftImg('${g.id}')">${SVG.eye} Vedi regalo</button>
+        ${g.link?`<a href="${g.link}" target="_blank" rel="noopener noreferrer" class="btn-link">Link regalo ${SVG.ext}</a>`:''}
       </div>
     </div>
-  </div>
+  </div></div>`;
+}
 
-  <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbypsQiE5Yfzx1LrssjkGnCiK-FIfA-kG8Yp-7K0xk2yJIbQRbOCk9XdJ2ETck5HktucfQ/exec";
+function renderContrib(){
+  const g=gifts.find(x=>x.id===modal);
+  if(!g)return'';
+  const r=contribs[g.id]||0;
+  const left=g.price-r;
+  let body='';
+  if(modalDone){
+    body=`<div style="text-align:center;padding:16px 0">
+      <div class="success-icon">${SVG.check}</div>
+      <h3 style="font-size:17px;margin:0 0 6px">Grazie, ${esc(modalName)}!</h3>
+      <p style="color:#999;font-size:13px;margin:0 0 18px">Il tuo contributo è stato registrato.</p>
+      <button class="btn-primary" style="width:auto;padding:10px 30px" onclick="closeContrib()">Chiudi</button>
+    </div>`;
+  }else if(modalStep===1){
+    body=`<label class="field-label">Il tuo nome</label>
+      <input class="field-input" id="cName" placeholder="es. Marco">
+      <label class="field-label">Quanto vuoi contribuire (£)</label>
+      <input class="field-input" id="cAmount" placeholder="Max ${fmt(left)}" inputmode="decimal">
+      <button class="btn-primary" onclick="goStep2()">Avanti →</button>`;
+  }else{
+    const caus='Lista Baby - '+g.name+' - '+modalName;
+    body=`<div class="bank-box">
+      <p class="bank-title">Dettagli per il bonifico</p>
+      <div class="bank-details">
+        <div><strong>Intestatario:</strong> Andrea Chiarenza &amp; Elisa Pedone</div>
+        <div><strong>IBAN:</strong> GB33 REVO 2301 2034 7187 31</div>
+        <div><strong>BIC / SWIFT:</strong> REVOGB21</div>
+        <div><strong>Importo:</strong> ${fmt(Number(modalAmount))}</div>
+        <div style="margin-top:8px"><strong>Causale:</strong></div>
+        <div class="bank-causale">${esc(caus)}</div>
+      </div>
+      <button class="btn-copy" onclick="copyCausale()">${SVG.copy} ${modalCopied?'Copiata!':'Copia causale'}</button>
+    </div>
+    <div class="btn-row">
+      <button class="btn-back" onclick="goStep1()">← Indietro</button>
+      <button class="btn-confirm" onclick="doConfirmContrib()">${SVG.check} Ho fatto il bonifico</button>
+    </div>`;
+  }
+  return`<div class="overlay" onclick="closeContrib()"><div class="modal" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeContrib()">${SVG.x}</button>
+    <div class="modal-inner">
+      <h2 class="modal-title">${esc(g.name)}</h2>
+      <p class="modal-sub">Prezzo: ${fmt(g.price)} — Raccolto: ${fmt(r)}</p>
+      ${body}
+    </div>
+  </div></div>`;
+}
 
-    let currentItem = null;
+function renderImg(){
+  const g=gifts.find(x=>x.id===viewImg);
+  if(!g)return'';
+  const img=getImg(g);
+  let content='';
+  if(img){
+    content=`<img src="${img}" alt="${esc(g.name)}" onerror="this.style.display='none';document.getElementById('imgFallback').style.display='block'">
+      <p class="img-fallback" id="imgFallback" style="display:none">Immagine non disponibile${g.link?'<br><br><a href="'+g.link+'" target="_blank">Vedi sul sito del negozio ↗</a>':''}</p>`;
+  }else{
+    content=`<p class="img-fallback">Immagine non ancora disponibile${g.link?'<br><br><a href="'+g.link+'" target="_blank">Vedi sul sito del negozio ↗</a>':''}</p>`;
+  }
+  return`<div class="img-overlay" onclick="closeImg()">
+    <button class="img-close" onclick="closeImg()">${SVG.x}</button>
+    <div onclick="event.stopPropagation()" style="text-align:center">
+      <p class="img-name">${esc(g.name)}</p>
+      ${content}
+    </div>
+  </div>`;
+}
 
-    function getGiftIcon(name) {
-      const n = (name || "").toLowerCase();
-      if (n.includes("sacca") || n.includes("coperta")) return "🧺";
-      if (n.includes("cestino")) return "🍼";
-      if (n.includes("materass")) return "🛏️";
-      if (n.includes("seggiolone")) return "🪑";
-      if (n.includes("bagnetto")) return "🛁";
-      if (n.includes("passeggino")) return "🛒";
-      return "🎁";
-    }
-
-    async function loadItems() {
-      try {
-        const res = await fetch(API_URL);
-        const data = await res.json();
-
-        const container = document.getElementById("list");
-        container.innerHTML = "";
-
-        data.forEach(item => {
-          const itemId = item.item_id || "";
-          const itemName = item.item_name || "";
-          const target = Number(item.target || 0);
-          const collected = Number(item.collected || 0);
-          const link = item.link || "";
-          const percent = target > 0 ? Math.min((collected / target) * 100, 100) : 0;
-
-          const safePayload = encodeURIComponent(JSON.stringify({
-            item_id: itemId,
-            item_name: itemName
-          }));
-
-          const card = document.createElement("div");
-          card.className = "card";
-
-          card.innerHTML = `
-            <div class="gift-icon">${getGiftIcon(itemName)}</div>
-            <h3>${itemName}</h3>
-            <div class="price-row">Prezzo totale: <strong>£${target.toFixed(2)}</strong></div>
-            <div class="progress">
-              <div class="progress-bar" style="width:${percent}%"></div>
-            </div>
-            <div class="percent-row">${percent.toFixed(0)}% completato</div>
-            <div class="collected-row">Contributo raccolto: <strong>£${collected.toFixed(2)}</strong></div>
-            <div class="actions">
-              <button class="btn" onclick="openModalFromEncoded('${safePayload}')">Contribuisci</button>
-              ${link ? `<a class="btn-outline" href="${link}" target="_blank" rel="noopener noreferrer">Vedi regalo</a>` : ""}
-            </div>
-          `;
-
-          container.appendChild(card);
-        });
-
-        if (!data.length) {
-          container.innerHTML = `<div class="error">Nessun regalo trovato.</div>`;
-        }
-      } catch (error) {
-        document.getElementById("list").innerHTML =
-          `<div class="error">Errore nel caricamento della lista.</div>`;
-        console.error(error);
-      }
-    }
-
-    function openModalFromEncoded(encodedItem) {
-      const item = JSON.parse(decodeURIComponent(encodedItem));
-      openModal(item);
-    }
-
-    function openModal(item) {
-      currentItem = item;
-      document.getElementById("modalBackdrop").classList.add("show");
-      document.getElementById("selectedGift").textContent = item.item_name || "";
-      document.getElementById("amountInput").value = "";
-      document.getElementById("nameInput").value = "";
-      document.getElementById("confirmBtn").disabled = false;
-      document.getElementById("confirmBtn").textContent = "Ho fatto il bonifico";
-      updateCause();
-    }
-
-    function closeModal() {
-      document.getElementById("modalBackdrop").classList.remove("show");
-      currentItem = null;
-    }
-
-    function updateCause() {
-      const amount = document.getElementById("amountInput").value.trim();
-      const name = document.getElementById("nameInput").value.trim();
-      const safeName = name || "Anonimo";
-      const gift = currentItem?.item_name || "Regalo";
-      const safeAmount = amount ? `£${Number(amount).toFixed(2)}` : "importo libero";
-      document.getElementById("causeBox").textContent = `${safeName} - ${gift} - ${safeAmount}`;
-    }
-
-    async function copyCause() {
-      updateCause();
-      const text = document.getElementById("causeBox").textContent;
-      try {
-        await navigator.clipboard.writeText(text);
-        alert("Causale copiata.");
-      } catch (e) {
-        alert("Non sono riuscito a copiare la causale.");
-      }
-    }
-
-    async function confirmContribution() {
-      if (!currentItem) return;
-
-      const amountRaw = document.getElementById("amountInput").value.trim();
-      const numericAmount = Number(String(amountRaw).replace(",", "."));
-      const button = document.getElementById("confirmBtn");
-
-      if (isNaN(numericAmount) || numericAmount <= 0) {
-        alert("Inserisci un importo valido.");
-        return;
-      }
-
-      try {
-        button.disabled = true;
-        button.textContent = "Aggiornamento...";
-
-        const res = await fetch(API_URL, {
-          method: "POST",
-          headers: {
-            "Content-Type": "text/plain;charset=utf-8"
-          },
-          body: JSON.stringify({
-            item_id: currentItem.item_id,
-            amount: numericAmount
-          })
-        });
-
-        const text = await res.text();
-        console.log("POST response raw:", text);
-
-        let result;
-        try {
-          result = JSON.parse(text);
-        } catch (e) {
-          throw new Error("Risposta non valida dallo script: " + text);
-        }
-
-        if (!result.success) {
-          throw new Error(result.error || "Errore sconosciuto");
-        }
-
-        alert("Contributo registrato correttamente.");
-        closeModal();
-        await loadItems();
-      } catch (error) {
-        console.error(error);
-        alert("Errore durante l'aggiornamento del contributo: " + error.message);
-        button.disabled = false;
-        button.textContent = "Ho fatto il bonifico";
-      }
-    }
-
-    document.getElementById("amountInput").addEventListener("input", updateCause);
-    document.getElementById("nameInput").addEventListener("input", updateCause);
-
-    document.getElementById("modalBackdrop").addEventListener("click", function(e) {
-      if (e.target === this) closeModal();
+function renderAdmin(){
+  let body='';
+  if(!adminAuth){
+    body=`<label class="field-label">Password</label>
+      <input class="field-input" type="password" id="adminPwd" placeholder="Inserisci password" onkeydown="if(event.key==='Enter')tryLogin()">
+      <div id="pwdErr"></div>
+      <button class="btn-primary" style="margin-top:8px" onclick="tryLogin()">Accedi</button>`;
+  }else{
+    body=`<div class="admin-section">
+      <p class="admin-section-title">Aggiungi regalo</p>
+      <input class="admin-input" id="newName" placeholder="Nome regalo">
+      <div class="admin-input-row">
+        <input class="admin-input" style="margin:0" id="newPrice" placeholder="Prezzo (£)" inputmode="decimal">
+        <input class="admin-input" style="margin:0;flex:2" id="newLink" placeholder="Link (opzionale)">
+      </div>
+      <input class="admin-input" id="newImg" placeholder="URL immagine (opzionale)">
+      <button class="btn-add" onclick="addGift()">${SVG.plus} Aggiungi</button>
+    </div>
+    <p class="admin-section-title">Regali attuali</p>`;
+    gifts.forEach(g=>{
+      const r=contribs[g.id]||0;
+      const del=confirmDelId===g.id;
+      body+=`<div class="admin-gift">
+        <div class="admin-gift-info">
+          <div class="admin-gift-name">${esc(g.name)}</div>
+          <div class="admin-gift-meta">${fmt(g.price)} — raccolto: ${fmt(r)}</div>
+        </div>
+        ${r>0?`<button class="btn-reset" onclick="resetC('${g.id}')">${SVG.reset} Azzera</button>`:''}
+        ${del
+          ?`<button class="btn-confirm-del" onclick="delGift('${g.id}')">Conferma</button><button class="btn-cancel-del" onclick="cancelDel()">No</button>`
+          :`<button class="btn-delete" onclick="startDel('${g.id}')">${SVG.trash} Elimina</button>`}
+      </div>`;
     });
+  }
+  return`<div class="overlay" onclick="closeAdmin()"><div class="modal modal-admin" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeAdmin()">${SVG.x}</button>
+    <div class="modal-inner">
+      <h2 style="font-size:18px;font-weight:700;margin:0 0 4px;color:#5a6b52">Pannello Admin</h2>
+      <p class="modal-sub">Gestisci regali e contributi</p>
+      ${body}
+    </div>
+  </div></div>`;
+}
 
-    loadItems();
-  </script>
+/* ── All global handlers ── */
+
+window.openContrib=function(id){modal=id;modalStep=1;modalName="";modalAmount="";modalCopied=false;modalDone=false;render()};
+window.closeContrib=function(){modal=null;render()};
+window.goStep1=function(){modalStep=1;render()};
+window.goStep2=function(){
+  var el1=document.getElementById("cName");
+  var el2=document.getElementById("cAmount");
+  var n=el1?el1.value:"";
+  var a=el2?(el2.value||"").replace(/[^0-9.]/g,""):"";
+  if(!n.trim()){if(el1)el1.style.borderColor="#d9534f";return}
+  if(!a||Number(a)<=0){if(el2)el2.style.borderColor="#d9534f";return}
+  modalName=n;modalAmount=a;modalStep=2;render();
+};
+window.doConfirmContrib=function(){
+  var g=gifts.find(function(x){return x.id===modal});
+  if(!g)return;
+  var a=Number(modalAmount);
+  var prev=contribs[g.id]||0;
+  var left=g.price-prev;
+  if(left<=0||a<=0)return;
+  contribs[g.id]=prev+Math.min(a,left);
+  saveContribs();modalDone=true;render();
+};
+window.copyCausale=function(){
+  var g=gifts.find(function(x){return x.id===modal});
+  if(!g)return;
+  var txt='Lista Baby - '+g.name+' - '+modalName;
+  try{navigator.clipboard.writeText(txt)}catch(e){}
+  modalCopied=true;render();
+  setTimeout(function(){modalCopied=false;render()},2000);
+};
+window.viewGiftImg=function(id){viewImg=id;render()};
+window.closeImg=function(){viewImg=null;render()};
+window.openAdmin=function(){adminOpen=true;adminAuth=false;confirmDelId=null;render()};
+window.closeAdmin=function(){adminOpen=false;render()};
+window.tryLogin=function(){
+  var el=document.getElementById("adminPwd");
+  var v=el?el.value:"";
+  if(v===ADMIN_PWD){adminAuth=true;render()}
+  else{var e=document.getElementById("pwdErr");if(e)e.innerHTML='<p class="error-text">Password errata</p>'}
+};
+window.resetC=function(id){delete contribs[id];saveContribs();render()};
+window.startDel=function(id){confirmDelId=id;render()};
+window.cancelDel=function(){confirmDelId=null;render()};
+window.delGift=function(id){
+  gifts=gifts.filter(function(g){return g.id!==id});
+  delete contribs[id];saveGifts();saveContribs();confirmDelId=null;render();
+};
+window.addGift=function(){
+  var el1=document.getElementById("newName");
+  var el2=document.getElementById("newPrice");
+  var el3=document.getElementById("newLink");
+  var el4=document.getElementById("newImg");
+  var n=el1?el1.value:"";
+  var p=el2?(el2.value||"").replace(/[^0-9.]/g,""):"";
+  var l=el3?el3.value:"";
+  var im=el4?el4.value:"";
+  if(!n.trim()){if(el1)el1.style.borderColor="#d9534f";return}
+  if(!p||Number(p)<=0){if(el2)el2.style.borderColor="#d9534f";return}
+  gifts.push({id:"g_"+Date.now(),name:n.trim(),price:Number(p),link:l.trim(),img:im.trim()});
+  saveGifts();render();
+};
+
+initData();
+</script>
 </body>
 </html>
